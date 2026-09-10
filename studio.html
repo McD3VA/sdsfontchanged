@@ -1,0 +1,1230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+  <title>About SandyDesignStudio · SDS</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+  <!-- Tailwind Custom Config for Team Section -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            aeonik: ['"Aeonik Pro"', 'sans-serif'],
+            satoshi: ['"Satoshi"', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              dark: '#111111',
+              gray: '#555555',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,600,700,900&f[]=neue-montreal@300,400&display=swap" rel="stylesheet" />
+  <!-- Aeonik Pro Font Import -->
+  <link href="https://fonts.cdnfonts.com/css/aeonik" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <!-- Lucide Icons for Navigation Toggle -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- GSAP & ScrollTrigger -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #ffffff;
+      color: #000000;
+      overflow-x: hidden;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    h1, h2, h3, .card-chapter, .main-headline {
+      text-wrap: balance;
+    }
+
+    .nav-offset { padding-top: clamp(52px, 6vw, 75px); }
+
+    /* ---------- GRADIENT TEXT UTILITY ---------- */
+    .gradient-text {
+      background: linear-gradient(135deg, #0c1334 0%, #27397f 50%, #5ea7db 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* ---------- CHAPTER CARDS (STACKING / UPWARD-SLIDE ANIMATION) ---------- */
+    .cards-wrapper {
+      height: 380vh;
+      position: relative;
+    }
+    .sticky-stage {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      height: 100dvh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .card {
+      position: absolute;
+      width: 100%;
+      max-width: 100vw;
+      height: 100vh;
+      height: 100dvh;
+      top: 0;
+      left: 0;
+      transform: translateY(100%);
+      opacity: 1;
+      transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1),
+                  opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: transform, opacity;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      padding: 0;
+    }
+    .card.visible { 
+      transform: translateY(0) scale(1); 
+      opacity: 1; 
+      z-index: 10; 
+    }
+    .card.exit { 
+      transform: translateY(-25%) scale(0.97); 
+      opacity: 0.4; 
+      z-index: 1; 
+    }
+
+    .card-light { background: #ffffff; color: #000000; }
+    .card-light .card-bar { background: #000000; }
+    .card-light .card-bar-text { color: #ffffff; }
+    .card-light .card-num { color: #000000; opacity: 0.4; }
+    .card-light .card-chapter { color: #000000; }
+    .card-light .card-desc { color: rgba(0, 0, 0, 0.8); }
+    .card-light .bg-year { color: rgba(0, 0, 0, 0.04); }
+    .card-light .logo-bottom img { opacity: 0.8; }
+
+    .card-dark { background: #000000; color: #ffffff; }
+    .card-dark .card-bar { background: #ffffff; }
+    .card-dark .card-bar-text { color: #000000; }
+    .card-dark .card-num { color: #ffffff; opacity: 0.5; }
+    .card-dark .card-chapter { color: #ffffff; }
+    .card-dark .card-desc { color: rgba(255, 255, 255, 0.8); }
+    .card-dark .bg-year { color: rgba(255, 255, 255, 0.06); }
+    .card-dark .logo-bottom img { filter: invert(1) !important; opacity: 0.85; }
+
+    .card-bar { padding: clamp(0.8rem, 2vw, 1.6rem) clamp(1rem, 4vw, 4rem); flex-shrink: 0; width: 100%; }
+    .card-bar-text { font-family: 'Satoshi', sans-serif; font-weight: 500; font-size: clamp(0.85rem, 2.2vw, 2.8rem); letter-spacing: -0.02em; }
+    .card-body { flex: 1; display: grid; grid-template-columns: 1fr 1fr; gap: clamp(1rem, 4vw, 4rem); padding: clamp(1.2rem, 4vw, 3.5rem) clamp(1rem, 4vw, 4rem); align-items: stretch; position: relative; z-index: 3; min-height: 0; }
+    .card-left { display: flex; flex-direction: column; justify-content: flex-start; gap: 0.4rem; padding-top: 0.4rem; }
+    .card-num { font-family: 'Satoshi', sans-serif; font-weight: 500; font-size: clamp(0.8rem, 1.1vw, 1.2rem); letter-spacing: 1.4px; margin-bottom: 0.2rem; }
+    .card-chapter { font-family: 'Satoshi', sans-serif; font-weight: 700; font-size: clamp(1.4rem, 3.5vw, 3.8rem); letter-spacing: -0.03em; line-height: 1.1; word-break: break-word; }
+    .card-right { display: flex; flex-direction: column; justify-content: center; align-items: flex-end; padding-top: 0.6rem; }
+    .card-desc { font-family: 'Neue Montreal', sans-serif; font-weight: 300; font-size: clamp(0.85rem, 1.2vw, 1.3rem); line-height: 1.7; letter-spacing: 0.02em; max-width: 38rem; }
+    .bg-year { position: absolute; bottom: -1.2rem; left: -1.6rem; font-family: 'Satoshi', sans-serif; font-weight: 700; font-size: clamp(6rem, 36vw, 34rem); line-height: 1; letter-spacing: -0.04em; pointer-events: none; user-select: none; z-index: 1; white-space: nowrap; }
+    .logo-bottom { position: absolute; bottom: clamp(1rem, 3vw, 2.8rem); left: clamp(1rem, 3.5vw, 3.6rem); z-index: 10; display: flex; align-items: center; }
+    .logo-bottom img { height: clamp(2rem, 4.2vw, 4.2rem); width: auto; display: block; }
+
+    .scroll-hint { display: none !important; }
+
+    .card-hero { background: #ffffff; color: #000000; display: flex; flex-direction: column; }
+    .card-hero .card-bar { display: none; }
+    .card-hero .card-body { flex: 1; padding: clamp(1rem, 4vw, 4rem) clamp(1rem, 4vw, 4rem) clamp(1rem, 2vw, 2rem); display: grid; grid-template-columns: 1fr 1fr; gap: clamp(1rem, 4vw, 4rem); align-items: center; }
+    .card-hero .card-left { padding-top: 0; height: 100%; justify-content: center; }
+    .card-hero .card-num { display: none; }
+    .card-hero .card-chapter { font-family: 'Aeonik Pro', sans-serif; font-size: clamp(2.2rem, 6.5vw, 8.5rem); font-weight: 600; line-height: 1.05; letter-spacing: -0.02em; color: #000000; margin-bottom: 1rem; }
+    .card-hero .card-chapter .sds { font-weight: 600; background: linear-gradient(135deg, #0c1334 0%, #27397f 50%, #5ea7db 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .card-hero .card-chapter .story { font-weight: 600; }
+    .card-hero .card-right { display: flex; flex-direction: column; justify-content: center; align-items: flex-end; padding-top: 0; }
+    .hero-accent { display: flex; gap: 1rem; align-items: stretch; margin-bottom: 0; }
+    .hero-black-line { width: 3px; background: #000000; flex-shrink: 0; border-radius: 2px; min-height: 80px; }
+    .hero-text-content { display: flex; flex-direction: column; justify-content: center; gap: 0.4rem; }
+    .hero-tagline { font-family: 'Inter', sans-serif; font-size: clamp(0.65rem, 0.9vw, 1rem); font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: #000000; }
+    .hero-desc { font-family: 'Inter', sans-serif; font-size: clamp(0.8rem, 1.2vw, 1.3rem); font-weight: 400; line-height: 1.6; color: rgba(0, 0, 0, 0.8); max-width: 32rem; }
+
+    .hero-logo-outer {
+      width: 240px;
+      height: 240px;
+      max-width: 100%;
+      aspect-ratio: 1 / 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transform: translateX(-20px);
+      flex-shrink: 0;
+    }
+    .hero-logo-spinner {
+      width: 100%;
+      height: 100%;
+      display: block;
+      animation: slowRotate 20s linear infinite;
+      will-change: transform;
+    }
+    .hero-logo-spinner img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+    @keyframes slowRotate {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @media (min-width: 1024px) {
+      .card-hero .card-right {
+        align-items: center !important;
+      }
+      .hero-logo-outer {
+        width: 330px !important;
+        height: 330px !important;
+        transform: none !important;
+      }
+    }
+
+    .card-hero .logo-bottom { display: none; }
+    .hero-marquee { width: 100%; background: #000000; padding: 0.8rem 0; overflow: hidden; flex-shrink: 0; }
+    .marquee-track-chapter { display: flex; white-space: nowrap; animation: marqueeScrollChapter 25s linear infinite; width: max-content; }
+    .marquee-track-chapter span { font-family: 'Inter', sans-serif; font-size: clamp(0.55rem, 0.8vw, 0.9rem); font-weight: 400; letter-spacing: 0.3em; text-transform: uppercase; color: #ffffff; padding: 0 1.5rem; display: inline-block; }
+    @keyframes marqueeScrollChapter { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+    /* ---------- PROCESS SECTION ---------- */
+    .process-section { position: relative; width: 100%; min-height: 100vh; overflow: hidden; background: #000000; color: #ffffff; }
+    .process-background { position: absolute; inset: 0; width: 100%; height: 100%; background-image: url("https://i.postimg.cc/C5QF5QFj/image.png"); background-repeat: no-repeat; background-position: center center; background-size: contain; pointer-events: none; z-index: 0; opacity: 0.6; }
+    .process-overlay { position: absolute; inset: 0; background: rgba(0, 0, 0, 0.5); pointer-events: none; z-index: 1; }
+    .process-container { position: relative; z-index: 2; display: grid; grid-template-columns: 1fr 1fr 1.5fr; gap: 2rem; width: 100%; max-width: 1400px; min-height: 100vh; margin: 0 auto; padding: 4rem clamp(1rem, 4vw, 2rem); }
+    .left-column { position: relative; z-index: 5; display: flex; flex-direction: column; justify-content: center; padding-right: clamp(0.5rem, 2vw, 2rem); }
+    .section-label { font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: #cccccc; display: flex; align-items: center; gap: 1rem; margin-bottom: 2rem; }
+    .section-label::after { content: ''; display: block; width: 40px; height: 1px; background-color: #666666; }
+    .main-headline { font-size: clamp(2rem, 3.8vw, 4.5rem); line-height: 1.1; font-weight: 400; letter-spacing: -0.02em; margin-bottom: 1.2rem; }
+    .main-headline .dot { color: #ffffff; }
+    .supporting-copy { font-size: 0.95rem; color: #cccccc; line-height: 1.6; max-width: 24rem; margin-bottom: 2rem; }
+    .bottom-copy-block { margin-top: auto; padding-top: 2rem; border-top: 1px solid #333333; }
+    .bottom-copy-block p { font-size: 0.85rem; color: #999999; line-height: 1.6; }
+    .process-center-space { position: relative; z-index: 3; min-height: 100%; }
+    .right-content-area { position: relative; z-index: 5; display: flex; flex-direction: column; justify-content: space-between; padding-top: 4%; padding-bottom: 8%; }
+    .process-step { display: flex; align-items: flex-start; gap: 1.2rem; position: relative; margin-bottom: 2.5vh; transition: transform 0.3s ease; }
+    .process-step:hover { transform: translateX(4px); }
+    .step-number { font-size: 1.5rem; font-weight: 300; color: #ffffff; line-height: 1; min-width: 2.2rem; }
+    .step-content { flex: 1; min-width: 0; }
+    .step-title { font-size: 0.9rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 0.3rem; color: #ffffff; }
+    .step-desc { font-size: 0.8rem; color: #cccccc; line-height: 1.5; }
+
+    @media (max-width: 1023px) {
+      .process-section {
+        min-height: auto;
+        height: auto;
+        padding: 4rem 1.25rem;
+      }
+      .process-background {
+        display: none;
+      }
+      .process-container {
+        display: flex;
+        flex-direction: column;
+        min-height: auto;
+        gap: 3rem;
+        padding: 0;
+      }
+      .process-center-space {
+        display: none;
+      }
+      .left-column {
+        padding-right: 0;
+      }
+      .right-content-area {
+        padding-top: 0;
+        padding-bottom: 0;
+        gap: 2rem;
+      }
+      .process-step {
+        margin-bottom: 1.5rem;
+      }
+    }
+
+    /* ---------- HERO VIDEO SHAPE ---------- */
+    .hero-video-shape {
+      position: relative;
+      width: 100%;
+      height: clamp(280px, 45vw, 520px);
+      border-top-left-radius: clamp(24px, 6vw, 100px);
+      border-bottom-left-radius: clamp(24px, 6vw, 100px);
+      overflow: hidden;
+      isolation: isolate;
+      background: #000;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+    }
+    .hero-video-shape video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    @media (max-width: 1023px) {
+      .nav-offset > main {
+        min-height: auto !important;
+        justify-content: flex-start !important;
+        padding-bottom: 2rem !important;
+      }
+
+      .nav-offset > main > div {
+        flex-grow: 0 !important;
+        margin-bottom: 0 !important;
+        gap: 0 !important;
+      }
+
+      .hero-video-wrapper {
+        align-self: flex-start !important;
+        width: calc(100% + 1rem) !important;
+        margin-right: -1rem !important;
+        margin-left: 0 !important;
+        margin-top: 36px !important;
+      }
+      .hero-video-shape {
+        width: 100% !important;
+        max-width: none !important;
+        height: 300px;
+        border-top-left-radius: 70px;
+        border-bottom-left-radius: 70px;
+        border-top-right-radius: 0 !important;
+        border-bottom-right-radius: 0 !important;
+      }
+    }
+
+    @media (min-width: 640px) and (max-width: 767px) {
+      .hero-video-wrapper {
+        width: calc(100% + 2rem) !important;
+        margin-right: -2rem !important;
+      }
+    }
+
+    @media (min-width: 768px) and (max-width: 1023px) {
+      .hero-video-wrapper {
+        width: calc(100% + 3rem) !important;
+        margin-right: -3rem !important;
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .hero-video-shape {
+        width: calc(50vw + 24px);
+        height: 520px;
+        border-top-left-radius: 100px;
+        border-bottom-left-radius: 100px;
+        margin-left: auto;
+        margin-top: -45px;
+      }
+    }
+
+    body.pin-lock { overflow: hidden !important; }
+
+    /* ----- FOOTER STYLES ----- */
+    .footer-gradient {
+        background: linear-gradient(135deg, #0C1334 0%, #27397f 100%);
+        position: relative;
+        overflow: hidden;
+        width: 100%;
+    }
+
+    .footer-aeonik {
+        font-family: 'Aeonik', sans-serif;
+        font-style: normal;
+        font-weight: 100;
+        font-size: clamp(1.15rem, 3.8vw, 3.2rem);
+    }
+
+    .footer-satoshi {
+        font-family: 'Satoshi', sans-serif;
+        font-style: normal;
+        font-weight: 600;
+        font-size: clamp(1.15rem, 3.8vw, 3.2rem);
+    }
+
+    /* ============================================================
+        DYNAMIC COLLAPSIBLE NAVIGATION (TOP LEFT)
+        ============================================================ */
+    .smooth-transition { transition: all 500ms cubic-bezier(0.25, 1, 0.5, 1); }
+    .active-dot { transition: all 300ms cubic-bezier(0.34, 1.56, 0.64, 1); }
+    .active-dot.active { opacity: 1; transform: scale(1) translateX(-50%); box-shadow: 0 0 8px rgba(255, 255, 255, 0.6); }
+    .active-dot.inactive { opacity: 0; transform: scale(0) translateX(-50%); }
+    #menu-icon-wrapper.expanded { transform: rotate(90deg) scale(0); opacity: 0; }
+    #menu-icon-wrapper.collapsed { transform: rotate(0) scale(1); opacity: 1; }
+    #close-icon-wrapper.expanded { transform: rotate(0) scale(1); opacity: 1; }
+    #close-icon-wrapper.collapsed { transform: rotate(-90deg) scale(0); opacity: 0; }
+    .scrollbar-hide::-webkit-scrollbar { display: none; }
+    .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
+    #logo-container-wrap {
+      transition: width 400ms cubic-bezier(0.22, 1, 0.36, 1), background-color 300ms ease, border 300ms ease, border-radius 300ms ease, padding 300ms ease;
+    }
+
+    /* ============================================================
+        TEAM & VISION SCROLL SECTION (SMOOTH HORIZONTAL SCROLL SLIDE)
+        ============================================================ */
+    .slide-card {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      will-change: transform, opacity;
+      pointer-events: none;
+    }
+
+    .team-card-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem;
+      width: 100%;
+      padding: 0 1rem;
+    }
+    @media (min-width: 1024px) {
+      .team-card-inner {
+        flex-direction: row;
+        justify-content: center;
+        gap: 4rem;
+        padding: 0 2rem;
+      }
+    }
+
+    .member-img-wrapper {
+      width: 200px;
+      height: 280px;
+      flex-shrink: 0;
+      border-radius: 0.85rem;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: transparent;
+    }
+    
+    @media (min-width: 640px) {
+      .member-img-wrapper { width: 260px; height: 350px; }
+    }
+    @media (min-width: 1024px) {
+      .member-img-wrapper { width: 340px; height: 480px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, ::before, ::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+
+    @media (max-width: 767px) {
+      .cards-wrapper {
+        height: 500vh !important; 
+      }
+      .card-hero .card-body {
+        display: flex; 
+        flex-direction: column;
+        justify-content: center;
+        gap: 3rem;
+        transform: translateY(-40px);
+      }
+      .card-hero .card-left {
+        width: 100%;
+        max-width: 100%; 
+        position: relative;
+        z-index: 2; 
+      }
+      .card-hero .hero-accent {
+        transform: none !important;
+      }
+      .card-hero .hero-desc {
+        transform: none !important;
+      }
+      .card-hero .card-right {
+        position: relative;
+        right: auto;
+        top: auto;
+        width: 100%;
+        align-items: center; 
+        z-index: 1; 
+      }
+      .card-hero .hero-logo-outer {
+        transform: translateY(-25px) !important; 
+        margin: 0 auto;
+        width: 200px;
+        height: 200px;
+      }
+    }
+  </style>
+</head>
+<body class="antialiased flex flex-col relative overflow-x-hidden w-full selection:bg-black/10">
+
+  <!-- DYNAMIC COLLAPSIBLE NAVIGATION (TOP LEFT) -->
+  <div id="nav-container" class="smooth-transition fixed top-3 left-3 sm:top-6 sm:left-6 z-[1000] flex items-center bg-black/70 backdrop-blur-xl border border-white/15 shadow-2xl rounded-full p-2 max-w-[94vw]">
+      <div id="logo-container-wrap" class="z-10 shrink-0 relative flex items-center justify-center h-9 w-9 sm:h-12 sm:w-12 overflow-hidden rounded-full border border-white/10 bg-white/5 cursor-pointer p-1.5" onclick="window.location.href='index.html'">
+          <img id="logo-collapsed" src="https://i.postimg.cc/K892XdFR/sds-white-logo-01-(1).png" alt="Collapsed Logo" class="absolute inset-0 w-full h-full object-cover smooth-transition opacity-100 scale-100 p-1" />
+          <img id="logo-expanded" src="https://i.postimg.cc/JnjLHGwc/Untitled-design-(63).png" alt="Expanded Logo" class="absolute inset-0 w-full h-full object-contain smooth-transition opacity-0 scale-95 pointer-events-none p-0.5" />
+      </div>
+
+      <div id="nav-wrapper" class="smooth-transition flex items-center overflow-x-auto scrollbar-hide max-w-0 opacity-0 px-0">
+          <nav class="flex items-center w-max justify-between gap-3 sm:gap-6 pr-2" id="nav-links-wrapper">
+          </nav>
+      </div>
+
+      <div class="z-10 flex items-center shrink-0">
+          <div id="divider" class="smooth-transition h-5 sm:h-6 w-px bg-white/20 mx-0 scale-y-0 opacity-0"></div>
+          <button id="toggle-btn" class="text-white hover:text-gray-300 transition-colors focus:outline-none p-2.5 sm:p-3 rounded-full hover:bg-white/10 active:scale-95 duration-200 shrink-0 ml-1" aria-label="Open menu">
+              <div class="relative w-4 h-4 sm:w-5 sm:h-5 flex items-center justify-center">
+                  <span id="menu-icon-wrapper" class="absolute collapsed smooth-transition">
+                      <i data-lucide="menu" class="w-4 h-4 sm:w-5 sm:h-5 stroke-[1.5]"></i>
+                  </span>
+                  <span id="close-icon-wrapper" class="absolute collapsed smooth-transition">
+                      <i data-lucide="x" class="w-4 h-4 sm:w-5 sm:h-5 stroke-[1.5]"></i>
+                  </span>
+              </div>
+          </button>
+      </div>
+  </div>
+
+  <div id="nav-overlay" class="fixed inset-0 z-[999] hidden bg-black/40 backdrop-blur-sm transition-opacity duration-500 opacity-0"></div>
+
+  <!-- ===== ABOUT SECTION ===== -->
+  <div class="nav-offset">
+    <main class="min-h-[85vh] md:min-h-[90vh] flex flex-col justify-center py-0 md:py-4 max-w-[1600px] mx-auto -mt-2 md:-mt-6">
+      <div class="flex flex-col lg:flex-row items-center justify-between gap-4 lg:gap-0 flex-grow mb-4 px-4 sm:px-8 md:px-12 lg:pl-24 lg:pr-0">
+        <div class="lg:w-1/2 flex flex-col gap-2 lg:pr-12 w-full">
+          <p class="text-xs sm:text-sm font-medium tracking-[0.2em] uppercase text-gray-500 mb-0.5 scroll-reveal">About SDS</p>
+          <h1 class="text-3xl sm:text-5xl md:text-6xl lg:text-[5.5rem] font-medium leading-[1.08] tracking-tight scroll-reveal">
+            Brands that<br/>make business<br/>value clear.
+          </h1>
+          <div class="mt-1 sm:mt-4 flex flex-col gap-3 text-sm sm:text-base md:text-lg text-gray-700 leading-relaxed max-w-xl scroll-reveal">
+            <p>SandyDesignStudio is a Chennai-based creative branding studio working with businesses that are ready to grow. We help founders and companies turn what they are good at into a brand people can understand, trust, and remember — through strategy, identity, content, digital presence, and growth.</p>
+          </div>
+        </div>
+        <div class="lg:w-1/2 w-full relative hero-video-wrapper">
+          <div class="hero-video-shape">
+            <video autoplay muted loop playsinline class="w-full h-full object-cover">
+              <source src="https://res.cloudinary.com/oskhdawe/video/upload/v1787915840/SDS_INTRO_1.mp4" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- ===== VISION & ALL TEAM SLIDES (SMOOTH HORIZONTAL SCROLL SLIDE) ===== -->
+  <div id="scroll-container" class="relative h-[500vh] sm:h-[420vh] lg:h-[420vh] w-full bg-[#fcfcfc]">
+    <main class="sticky top-0 h-screen h-[100dvh] w-full flex items-center overflow-hidden">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full h-full relative flex items-center justify-center">
+
+        <!-- SLIDE 0: Founder (Santhosh S) -->
+        <div id="slide-0" class="slide-card">
+          <div class="team-card-inner">
+            <div class="member-img-wrapper !w-[220px] sm:!w-[300px] lg:!w-[420px] !h-[310px] sm:!h-[420px] lg:!h-[580px]">
+              <img alt="Founder sitting on a chair" class="w-full h-full object-cover object-center drop-shadow-xl" src="https://i.postimg.cc/QC2zsBdh/Founder-3x-3x.png"/>
+            </div>
+            <div class="flex flex-col text-left max-w-lg">
+              <h1 class="text-2xl sm:text-4xl lg:text-5xl font-bold tracking-tight mb-2 leading-none text-gray-900">
+                Santhosh S<span class="gradient-text">.</span>
+              </h1>
+              <div class="mb-4 overflow-hidden flex items-center">
+                <span class="gradient-text font-semibold text-xs sm:text-sm tracking-widest uppercase inline-block founder-role-reveal">FOUNDER &amp; STRATEGIST</span>
+              </div>
+              <p class="text-brand-gray leading-relaxed text-sm sm:text-base">
+                Building brands that turn what businesses do best into clarity, trust, and lasting value.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- SLIDE 1: Social Media Team -->
+        <div id="slide-1" class="slide-card">
+          <div class="team-card-inner">
+            <div class="flex gap-4">
+              <div class="flex flex-col items-center">
+                <div class="member-img-wrapper !w-[130px] sm:!w-[190px] lg:!w-[230px] !h-[170px] sm:!h-[260px] lg:!h-[320px]">
+                  <img src="https://i.postimg.cc/Nf2GjpBB/image.png" alt="Arjun Raj" class="w-full h-full object-cover object-center"/>
+                </div>
+                <h3 class="text-xs sm:text-sm font-bold text-gray-900 mt-2">Arjun Raj</h3>
+                <p class="gradient-text text-[8px] sm:text-xs uppercase tracking-wider font-semibold">Project Manager</p>
+              </div>
+              <div class="flex flex-col items-center">
+                <div class="member-img-wrapper !w-[130px] sm:!w-[190px] lg:!w-[230px] !h-[170px] sm:!h-[260px] lg:!h-[320px]">
+                  <img src="https://i.postimg.cc/4xzJzyKX/image.png" alt="Keerthana R" class="w-full h-full object-cover object-center"/>
+                </div>
+                <h3 class="text-xs sm:text-sm font-bold text-gray-900 mt-2">Keerthana R</h3>
+                <p class="gradient-text text-[8px] sm:text-xs uppercase tracking-wider font-semibold">Social Media Manager</p>
+              </div>
+            </div>
+            <div class="flex flex-col text-left max-w-lg">
+              <div class="mb-3 flex items-center justify-start">
+                <span class="gradient-text font-medium text-base sm:text-lg">01</span>
+                <span class="text-gray-500 text-xs sm:text-sm tracking-widest ml-2 uppercase">/ TEAM</span>
+              </div>
+              <h1 class="text-2xl sm:text-4xl lg:text-5xl font-bold leading-[1.1] tracking-tight mb-4 text-gray-900">
+                Social media<br/>team<span class="gradient-text">.</span>
+              </h1>
+              <div class="w-10 h-0.5 bg-[#27397f] mb-4"></div>
+              <p class="text-gray-700 text-xs sm:text-base md:text-lg leading-relaxed">
+                We plan, create and manage content that builds engagement and drives real results.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- SLIDE 2: Creative Team -->
+        <div id="slide-2" class="slide-card">
+          <div class="team-card-inner">
+            <div class="grid grid-cols-2 gap-3 max-w-[420px]">
+              <div class="flex flex-col items-center">
+                <div class="member-img-wrapper !w-[100px] sm:!w-[130px] lg:!w-[160px] !h-[130px] sm:!h-[160px] lg:!h-[200px]">
+                  <img src="https://i.postimg.cc/yNZ0hFF2/image.png" alt="Vasanth V" class="w-full h-full object-cover object-center"/>
+                </div>
+                <h3 class="text-[11px] sm:text-sm font-bold text-gray-900 mt-1">Vasanth V</h3>
+                <p class="gradient-text text-[8px] sm:text-[10px] uppercase tracking-wider font-semibold">Graphic Designer</p>
+              </div>
+              <div class="flex flex-col items-center">
+                <div class="member-img-wrapper !w-[100px] sm:!w-[130px] lg:!w-[160px] !h-[130px] sm:!h-[160px] lg:!h-[200px]">
+                  <img src="https://i.postimg.cc/GpFHhzPm/image.png" alt="Praveen P" class="w-full h-full object-cover object-center"/>
+                </div>
+                <h3 class="text-[11px] sm:text-sm font-bold text-gray-900 mt-1">Praveen P</h3>
+                <p class="gradient-text text-[8px] sm:text-[10px] uppercase tracking-wider font-semibold">UI/UX Designer</p>
+              </div>
+              <div class="flex flex-col items-center">
+                <div class="member-img-wrapper !w-[100px] sm:!w-[130px] lg:!w-[160px] !h-[130px] sm:!h-[160px] lg:!h-[200px]">
+                  <img src="https://i.postimg.cc/GpFHhzPm/image.png" alt="Vignesh S" class="w-full h-full object-cover object-center"/>
+                </div>
+                <h3 class="text-[11px] sm:text-sm font-bold text-gray-900 mt-1">Vignesh S</h3>
+                <p class="gradient-text text-[8px] sm:text-[10px] uppercase tracking-wider font-semibold">Video Editor</p>
+              </div>
+              <div class="flex flex-col items-center">
+                <div class="member-img-wrapper !w-[100px] sm:!w-[130px] lg:!w-[160px] !h-[130px] sm:!h-[160px] lg:!h-[200px]">
+                  <img src="https://i.postimg.cc/yNZ0hFF2/image.png" alt="Logesh K" class="w-full h-full object-cover object-center"/>
+                </div>
+                <h3 class="text-[11px] sm:text-sm font-bold text-gray-900 mt-1">Logesh K</h3>
+                <p class="gradient-text text-[8px] sm:text-[10px] uppercase tracking-wider font-semibold">Video Editor</p>
+              </div>
+            </div>
+            <div class="flex flex-col text-left max-w-lg">
+              <div class="mb-3 flex items-center justify-start">
+                <span class="gradient-text font-semibold text-base sm:text-lg">02</span>
+                <span class="text-gray-400 text-xs sm:text-sm tracking-widest ml-3 uppercase font-medium">/ TEAM</span>
+              </div>
+              <h1 class="text-2xl sm:text-4xl lg:text-5xl font-bold leading-[1.08] tracking-tight mb-4 text-gray-900">
+                Creative<br/>team<span class="gradient-text">.</span>
+              </h1>
+              <div class="w-10 h-0.5 bg-[#27397f] mb-4"></div>
+              <p class="text-gray-700 text-xs sm:text-base md:text-lg leading-relaxed mb-6">
+                From design to editing, we turn ideas into visuals that connect, communicate and convert.
+              </p>
+              <div>
+                <span class="inline-block px-3 py-1 rounded-md bg-blue-50 gradient-text font-semibold text-[10px] sm:text-xs tracking-wider uppercase">
+                  Designers
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SLIDE 3: Production Team -->
+        <div id="slide-3" class="slide-card">
+          <div class="team-card-inner">
+            <div class="flex gap-4">
+              <div class="flex flex-col items-center">
+                <div class="member-img-wrapper !w-[130px] sm:!w-[190px] lg:!w-[230px] !h-[170px] sm:!h-[260px] lg:!h-[320px]">
+                  <img src="https://i.postimg.cc/5yRtkr1N/image.png" alt="Dinesh K" class="w-full h-full object-cover object-center"/>
+                </div>
+                <h3 class="text-xs sm:text-sm font-bold text-gray-900 mt-2">Dinesh K</h3>
+                <p class="gradient-text text-[8px] sm:text-xs uppercase tracking-wider font-semibold">Cinematographer</p>
+              </div>
+              <div class="flex flex-col items-center">
+                <div class="member-img-wrapper !w-[130px] sm:!w-[190px] lg:!w-[230px] !h-[170px] sm:!h-[260px] lg:!h-[320px]">
+                  <img src="https://i.postimg.cc/nLGhtrZW/image.png" alt="Siva Prakash" class="w-full h-full object-cover object-center"/>
+                </div>
+                <h3 class="text-xs sm:text-sm font-bold text-gray-900 mt-2">Siva Prakash</h3>
+                <p class="gradient-text text-[8px] sm:text-xs uppercase tracking-wider font-semibold">Creative Director</p>
+              </div>
+            </div>
+            <div class="flex flex-col text-left max-w-lg">
+              <div class="mb-3 flex items-center justify-start">
+                <span class="gradient-text font-medium text-base sm:text-lg">03</span>
+                <span class="text-gray-500 text-xs sm:text-sm tracking-widest ml-2 uppercase">/ PRODUCTION</span>
+              </div>
+              <h1 class="text-2xl sm:text-4xl lg:text-5xl font-bold leading-[1.1] tracking-tight mb-4 text-gray-900">
+                Production<br/>team<span class="gradient-text">.</span>
+              </h1>
+              <div class="w-10 h-0.5 bg-[#27397f] mb-4"></div>
+              <p class="text-gray-700 text-xs sm:text-base md:text-lg leading-relaxed">
+                We bring stories to life with cinematic precision, creative vision, and striking visual execution.
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- ===== CHAPTERS (ACCELERATED SCROLL: 380vh) ===== -->
+  <div class="cards-wrapper">
+    <div class="sticky-stage">
+      <!-- HERO CARD -->
+      <div class="card card-hero visible" data-index="0" style="transform: translateY(0);">
+        <div class="card-body">
+          <div class="card-left">
+            <div class="card-chapter"><span class="sds">SDS</span><br/><span class="story">ABOUT</span></div>
+            <div class="hero-accent">
+              <div class="hero-black-line"></div>
+              <div class="hero-text-content">
+                <div class="hero-tagline">CLEAR. CREATIVE. COMMUNICATION.</div>
+                <p class="hero-desc">Our work starts before the design. We understand the business, its audience, its market, and where it wants to go. From there, we build the strategy and creative system that brings everything together.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card-right">
+            <div class="hero-logo-outer">
+              <div class="hero-logo-spinner">
+                <img src="https://i.postimg.cc/4yLYKTgD/sds-website-logo-02.png" alt="SDS Logo" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="hero-marquee">
+          <div class="marquee-track-chapter">
+            <span>STRATEGY • IDENTITY • CONTENT • DIGITAL • GROWTH • STRATEGY • IDENTITY • CONTENT • DIGITAL • GROWTH • STRATEGY • IDENTITY • CONTENT • DIGITAL • GROWTH •</span>
+            <span>STRATEGY • IDENTITY • CONTENT • DIGITAL • GROWTH • STRATEGY • IDENTITY • CONTENT • DIGITAL • GROWTH • STRATEGY • IDENTITY • CONTENT • DIGITAL • GROWTH •</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- CHAPTER 1 -->
+      <div class="card card-light" data-index="1">
+        <div class="card-bar"><span class="card-bar-text">Good Businesses Deserve Brands That Show It.</span></div>
+        <div class="card-body">
+          <div class="card-left"><div class="card-num">01</div><div class="card-chapter">What We Believe</div></div>
+          <div class="card-right"><p class="card-desc">Many businesses have far more to offer than their brand currently reveals. The work is strong. The expertise is there. The ambition is there. But when the brand doesn't communicate that value clearly, potential clients make decisions before the conversation even begins. That's the gap we help close.</p></div>
+          <div class="bg-year" aria-hidden="true">01</div>
+          <div class="logo-bottom"><img src="https://i.postimg.cc/W4pVY18m/sds-website-logo-01.png" alt="SDS" /></div>
+        </div>
+      </div>
+
+      <!-- CHAPTER 2 -->
+      <div class="card card-dark" data-index="2">
+        <div class="card-bar"><span class="card-bar-text">Clear. Creative. Communication.</span></div>
+        <div class="card-body">
+          <div class="card-left"><div class="card-num">02</div><div class="card-chapter">Our Philosophy</div></div>
+          <div class="card-right">
+            <p class="card-desc">
+              <span class="block font-semibold text-white mb-1">Clear</span>
+              <span class="block mb-2 sm:mb-3">We understand your business completely before we create anything.</span>
+              <span class="block font-semibold text-white mb-1">Creative</span>
+              <span class="block mb-2 sm:mb-3">We turn that understanding into purposeful, distinctive work that feels true to your business.</span>
+              <span class="block font-semibold text-white mb-1">Communication</span>
+              <span class="block mb-2 sm:mb-3">We put your story where your audience is and make sure it connects.</span>
+              <span class="block font-medium text-white/90">Together, these principles shape everything we do at SDS.</span>
+            </p>
+          </div>
+          <div class="bg-year" aria-hidden="true">02</div>
+          <div class="logo-bottom"><img src="https://i.postimg.cc/W4pVY18m/sds-website-logo-01.png" alt="SDS" /></div>
+        </div>
+      </div>
+
+      <!-- CHAPTER 3 -->
+      <div class="card card-light" data-index="3">
+        <div class="card-bar"><span class="card-bar-text">Strategy to Growth. One Connected System.</span></div>
+        <div class="card-body">
+          <div class="card-left"><div class="card-num">03</div><div class="card-chapter">What We Do</div></div>
+          <div class="card-right"><p class="card-desc">Nine capabilities. One direction. Brand Strategy. Brand Story. Brand Identity. Graphic Design. Content Strategy. Video Production. Video Editing. Platform Building. Growth Marketing.</p></div>
+          <div class="bg-year" aria-hidden="true">03</div>
+          <div class="logo-bottom"><img src="https://i.postimg.cc/W4pVY18m/sds-website-logo-01.png" alt="SDS" /></div>
+        </div>
+      </div>
+
+      <!-- CHAPTER 4 -->
+      <div class="card card-dark" data-index="4">
+        <div class="card-bar"><span class="card-bar-text">Businesses With Something Worth Building.</span></div>
+        <div class="card-body">
+          <div class="card-left"><div class="card-num">04</div><div class="card-chapter">Who We Work With</div></div>
+          <div class="card-right"><p class="card-desc">We do our best work with founders who have built something real, companies that have grown through expertise and referrals, teams ready to move into their next stage, and businesses that need their brand to reflect the level they've already reached. Our deepest expertise sits across infrastructure and civil, interiors and architecture, manufacturing and industrial, and sustainability and clean energy.</p></div>
+          <div class="bg-year" aria-hidden="true">04</div>
+          <div class="logo-bottom"><img src="https://i.postimg.cc/W4pVY18m/sds-website-logo-01.png" alt="SDS" /></div>
+        </div>
+      </div>
+
+      <!-- CHAPTER 5 -->
+      <div class="card card-light" data-index="5">
+        <div class="card-bar"><span class="card-bar-text">About the Maker</span></div>
+        <div class="card-body">
+          <div class="card-left"><div class="card-num">05</div><div class="card-chapter">Santhosh S</div></div>
+          <div class="card-right">
+            <p class="card-desc">
+              <span class="block font-semibold text-black mb-1">Founder & Brand Strategist</span>
+              <span class="block mb-2 sm:mb-3">Santhosh S is a Chennai-based brand and growth strategist working at the intersection of brand strategy, product marketing, and go-to-market thinking.</span>
+              <span class="block mb-2 sm:mb-3">His background began in tech development before moving into brand and product marketing, giving him a combination of technical understanding and strategic brand thinking.</span>
+              <span class="block font-medium text-black">A clear brand position helps businesses win better clients, command better value, and compete beyond price.</span>
+            </p>
+          </div>
+          <div class="bg-year" aria-hidden="true">05</div>
+          <div class="logo-bottom"><img src="https://i.postimg.cc/W4pVY18m/sds-website-logo-01.png" alt="SDS" /></div>
+        </div>
+      </div>
+
+      <!-- CHAPTER 6 -->
+      <div class="card card-dark" data-index="6">
+        <div class="card-bar"><span class="card-bar-text">A Small Team. A Lot of Ownership.</span></div>
+        <div class="card-body">
+          <div class="card-left"><div class="card-num">06</div><div class="card-chapter">The Studio</div></div>
+          <div class="card-right">
+            <p class="card-desc">
+              <span class="block font-semibold text-black mb-1">Collaborative Approach</span>
+              SDS is built around close collaboration. Every person involved in a project has a role in thinking, creating, refining, and moving the brand forward. 12 team members. 35+ brands built. 2,000+ videos published. 200M+ organic reach generated for clients.
+              <span class="block mt-3 font-medium text-white text-[1.1em]">Still Building Brands That Matter.</span>
+            </p>
+          </div>
+          <div class="bg-year" aria-hidden="true">06</div>
+          <div class="logo-bottom"><img src="https://i.postimg.cc/W4pVY18m/sds-website-logo-01.png" alt="SDS" /></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== PROCESS SECTION ===== -->
+  <section class="process-section">
+    <div class="process-background"></div>
+    <div class="process-overlay"></div>
+    <div class="process-container">
+      <section class="left-column">
+        <div class="section-label scroll-reveal">How We Work</div>
+        <h1 class="main-headline scroll-reveal">We Don't Wait<br>For Instructions.<br>We Take Ownership<span class="dot">.</span></h1>
+        <p class="supporting-copy scroll-reveal">We work closely with every client we take on. No unnecessary handoffs. No distant account management. No junior team hidden behind the relationship.</p>
+        <div class="bottom-copy-block scroll-reveal">
+          <div class="h-px w-12 mb-4 bg-gray-500"></div>
+          <p>From the first business deep dive to strategy, production, review, and growth, we stay close to the work.</p>
+        </div>
+      </section>
+      <div class="process-center-space"></div>
+      <section class="right-content-area">
+        <article class="process-step scroll-reveal"><div class="step-number">01</div><div class="step-content"><h2 class="step-title">Business Deep Dive</h2><p class="step-desc">We understand the business, its audience, its market, and where it wants to go.</p></div></article>
+        <article class="process-step scroll-reveal"><div class="step-number">02</div><div class="step-content"><h2 class="step-title">Strategy</h2><p class="step-desc">We build the strategy and creative system that brings everything together.</p></div></article>
+        <article class="process-step scroll-reveal"><div class="step-number">03</div><div class="step-content"><h2 class="step-title">Production</h2><p class="step-desc">We create the identity, content, digital presence, and brand assets.</p></div></article>
+        <article class="process-step scroll-reveal"><div class="step-number">04</div><div class="step-content"><h2 class="step-title">Review</h2><p class="step-desc">We stay close to the work, refine it with the client, and keep every piece aligned.</p></div></article>
+      </section>
+    </div>
+  </section>
+
+  <!-- ===== PROFESSIONAL CTA SECTION ===== -->
+  <section id="cta-section" class="bg-white text-black border-t border-b border-black/10 w-full flex items-center justify-center py-20 md:py-28 px-4 sm:px-6 relative overflow-hidden scroll-reveal" data-purpose="cta-section">
+    <div class="absolute -top-24 left-1/2 -translate-x-1/2 w-[400px] md:w-[600px] h-[250px] md:h-[300px] bg-gradient-to-r from-[#0c1334]/5 via-[#27397f]/10 to-[#5ea7db]/10 blur-3xl pointer-events-none rounded-full"></div>
+
+    <div class="text-center max-w-3xl mx-auto relative z-10 cta-content-wrapper">
+      <h2 class="text-2xl sm:text-4xl md:text-6xl font-medium tracking-tight mb-4 md:mb-6 leading-tight">
+        Think your brand can <span class="bg-gradient-to-r from-[#0c1334] via-[#27397f] to-[#5ea7db] bg-clip-text text-transparent font-semibold">do more?</span>
+      </h2>
+      <p class="text-base sm:text-lg md:text-xl text-gray-600 mb-8 md:mb-10 max-w-2xl mx-auto leading-relaxed font-normal">
+        Tell us where your business is today. We'll help you figure out where it can go next.
+      </p>
+      
+      <div class="inline-block group">
+        <a class="inline-flex items-center justify-center px-8 sm:px-10 py-4 sm:py-5 bg-gradient-to-r from-[#0c1334] via-[#27397f] to-[#5ea7db] hover:brightness-110 text-white text-xs sm:text-sm font-semibold tracking-[0.18em] uppercase rounded-full transition-all duration-300 hover:scale-[1.02] hover:-translate-y-1 shadow-xl shadow-[#0c1334]/20" data-purpose="cta-button" href="connect.html">
+          Start a Conversation
+          <svg class="w-4 h-4 ml-2.5 transition-transform duration-300 group-hover:translate-x-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+          </svg>
+        </a>
+      </div>
+
+      <p class="text-[11px] sm:text-xs text-gray-400 uppercase tracking-[0.2em] sm:tracking-[0.25em] mt-6 sm:mt-8 font-medium">
+        One conversation. <span class="bg-gradient-to-r from-[#27397f] to-[#5ea7db] bg-clip-text text-transparent font-semibold">A clearer direction.</span>
+      </p>
+    </div>
+  </section>
+
+  <!-- BACK TO TOP BUTTON SECTION -->
+  <div class="w-full bg-white py-8 flex justify-center border-b border-black/10">
+    <button id="back-to-top-btn" class="group inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-black/15 bg-white text-black hover:bg-black hover:text-white transition-all duration-300 text-xs uppercase tracking-widest font-medium shadow-sm hover:scale-105 active:scale-95 cursor-pointer">
+      <span>Back to Top</span>
+      <i class="fa-solid fa-arrow-up transition-transform duration-300 group-hover:-translate-y-1"></i>
+    </button>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="w-full text-white pt-16 pb-12 px-5 sm:px-8 md:px-12 lg:px-20 border-t border-white/10 relative z-30 stagger-container footer-gradient">
+      <div class="max-w-7xl mx-auto flex flex-col gap-8">
+          <div class="flex flex-col md:flex-row justify-between text-[14px] leading-relaxed font-normal tracking-wide">
+              <div class="flex flex-wrap gap-12 md:gap-16 lg:gap-24">
+                  <div class="flex flex-col gap-2.5 leading-loose">
+                      <a class="hover:text-gray-300 transition-colors" href="built.html">Built</a>
+                      <a class="hover:text-gray-300 transition-colors" href="studio.html">Studio</a>
+                  </div>
+                  <div class="flex flex-col gap-2.5 leading-loose">
+                      <a class="hover:text-gray-300 transition-colors" href="create.html">Create</a>
+                      <a class="hover:text-gray-300 transition-colors" href="think.html">Think</a>
+                      <a class="hover:text-gray-300 transition-colors" href="connect.html">Connect</a>
+                  </div>
+                  <div class="flex flex-col gap-2.5 leading-loose">
+                      <span class="text-white/80 text-sm">Chennai</span>
+                      <span class="text-white/60 text-sm">Tamil Nadu, India</span>
+                  </div>
+              </div>
+
+              <div class="flex flex-col gap-2.5 mt-6 md:mt-0 md:text-right leading-loose">
+                  <a class="hover:text-gray-300 transition-colors" href="tel:+916369325726">+91 63693 25726</a>
+                  <a class="hover:text-gray-300 transition-colors" href="mailto:admin@sandydesignstudio.com">admin@sandydesignstudio.com</a>
+                  <a class="hover:text-gray-300 transition-colors" href="#">Company Profile</a>
+              </div>
+          </div>
+
+          <div class="flex gap-4 mt-2">
+              <a aria-label="LinkedIn" class="w-10 h-10 bg-white rounded-full flex items-center justify-center text-[#0c1334] hover:bg-gray-200 transition-colors micro-hover" href="https://www.linkedin.com/company/sandydesignstudio"><i class="fa-brands fa-linkedin-in text-lg"></i></a>
+              <a aria-label="Instagram" class="w-10 h-10 bg-white rounded-full flex items-center justify-center text-[#0c1334] hover:bg-gray-200 transition-colors micro-hover" href="https://www.instagram.com/sandydesignstudio_"><i class="fa-brands fa-instagram text-lg"></i></a>
+              <a aria-label="Facebook" class="w-10 h-10 bg-white rounded-full flex items-center justify-center text-[#0c1334] hover:bg-gray-200 transition-colors micro-hover" href="#"><i class="fa-brands fa-facebook-f text-lg"></i></a>
+              <a aria-label="YouTube" class="w-10 h-10 bg-white rounded-full flex items-center justify-center text-[#0c1334] hover:bg-gray-200 transition-colors micro-hover" href="#"><i class="fa-brands fa-youtube text-lg"></i></a>
+          </div>
+
+          <hr class="border-t border-white/20 w-full mt-4 mb-6" />
+
+          <div class="flex-grow flex flex-col items-center justify-center text-center w-full pb-8">
+              <h1 class="footer-line">
+                  <span class="footer-aeonik">Where business thinking&nbsp;</span>
+                  <span class="footer-satoshi">becomes brand expression.</span>
+              </h1>
+          </div>
+      </div>
+  </footer>
+
+  <script>
+    // Initialize Lucide Icons
+    lucide.createIcons();
+
+    (function() {
+      // ---------- CHAPTERS + PIN LOCK ----------
+      const cards  = document.querySelectorAll('.cards-wrapper .card');
+      const total  = cards.length;
+      let current  = -1;
+      const body = document.body;
+      let pinLockActive = false;
+      let scrollLocked = false;
+
+      const navContainer = document.getElementById('nav-container');
+
+      function show(index) {
+        if (index === current) return;
+        current = index;
+        cards.forEach((c, i) => {
+          c.classList.remove('visible', 'exit');
+          if (i === index) {
+            c.classList.add('visible');
+          } else if (i < index) {
+            c.classList.add('exit');
+          }
+        });
+
+        const wrapper = document.querySelector('.cards-wrapper');
+        const rect = wrapper.getBoundingClientRect();
+        const isInsideSticky = rect.top <= 0 && rect.bottom >= window.innerHeight;
+
+        if (isInsideSticky && index >= 1) {
+          navContainer.style.opacity = '0';
+          navContainer.style.pointerEvents = 'none';
+          navContainer.style.transform = 'translateY(-20px)';
+        } else {
+          navContainer.style.opacity = '1';
+          navContainer.style.pointerEvents = 'auto';
+          navContainer.style.transform = 'translateY(0)';
+        }
+
+        if (index === (total - 1) && !pinLockActive) {
+          pinLockActive = true;
+          body.classList.add('pin-lock');
+          scrollLocked = true;
+          setTimeout(() => {
+            body.classList.remove('pin-lock');
+            scrollLocked = false;
+            pinLockActive = false;
+          }, 800);
+        }
+      }
+
+      function onScroll() {
+        if (scrollLocked) return;
+        const wrapper = document.querySelector('.cards-wrapper');
+        if (!wrapper) return;
+        const rect = wrapper.getBoundingClientRect();
+        const scrollableDistance = rect.height - window.innerHeight;
+        let ratio = -rect.top / scrollableDistance;
+        ratio = Math.max(0, Math.min(1, ratio));
+        const idx = Math.min(Math.floor(ratio * total), total - 1);
+        show(idx);
+      }
+
+      if (cards.length > 0) {
+        show(0);
+        window.addEventListener('scroll', onScroll, { passive: true });
+      }
+
+      // ---------- NAVIGATION & LOGO MORPHING ----------
+      let isNavExpanded = false;
+
+      const navItemsList = [
+        { label: 'Built', href: 'built.html' },
+        { label: 'Create', href: 'create.html' },
+        { label: 'Studio', href: 'studio.html' },
+        { label: 'Think', href: 'think.html' },
+        { label: 'Connect', href: 'connect.html' }
+      ];
+
+      const navWrapper = document.getElementById('nav-wrapper');
+      const navLinksWrapper = document.getElementById('nav-links-wrapper');
+      const logoContainerWrap = document.getElementById('logo-container-wrap');
+      const logoCollapsed = document.getElementById('logo-collapsed');
+      const logoExpanded = document.getElementById('logo-expanded');
+      const divider = document.getElementById('divider');
+      const toggleBtn = document.getElementById('toggle-btn');
+      const menuIconWrapper = document.getElementById('menu-icon-wrapper');
+      const closeIconWrapper = document.getElementById('close-icon-wrapper');
+      const navOverlay = document.getElementById('nav-overlay');
+
+      function renderNavLinks() {
+        navLinksWrapper.innerHTML = '';
+        const currentPath = window.location.pathname.split('/').pop() || 'studio.html';
+
+        navItemsList.forEach(item => {
+          const isActive = currentPath === item.href;
+          const textColorClass = isActive ? 'text-white' : 'text-gray-400 group-hover:text-white';
+          const dotStateClass = isActive ? 'active' : 'inactive';
+
+          const linkHTML = `
+            <a
+              href="${item.href}"
+              class="relative group text-sm sm:text-base font-medium transition-colors duration-300 focus:outline-none whitespace-nowrap py-2 px-1 no-underline"
+            >
+              <span class="transition-colors duration-300 ${textColorClass}">
+                ${item.label}
+              </span>
+              <span class="active-dot ${dotStateClass} absolute -bottom-1 left-1/2 w-1.5 h-1.5 rounded-full bg-white shadow-lg"></span>
+            </a>
+          `;
+          navLinksWrapper.insertAdjacentHTML('beforeend', linkHTML);
+        });
+      }
+
+      function toggleNav() {
+        isNavExpanded = !isNavExpanded;
+
+        if (isNavExpanded) {
+          navWrapper.classList.remove('max-w-0', 'opacity-0', 'px-0');
+          navWrapper.classList.add('max-w-[800px]', 'opacity-100', 'px-3', 'sm:px-6');
+          logoContainerWrap.style.width = '130px';
+          logoContainerWrap.style.backgroundColor = 'transparent';
+          logoContainerWrap.style.border = '0';
+          logoContainerWrap.style.borderRadius = '0';
+          logoContainerWrap.style.padding = '0 4px';
+
+          logoCollapsed.classList.remove('opacity-100', 'scale-100');
+          logoCollapsed.classList.add('opacity-0', 'scale-90', 'pointer-events-none');
+          logoExpanded.classList.remove('opacity-0', 'scale-90', 'pointer-events-none');
+          logoExpanded.classList.add('opacity-100', 'scale-100');
+
+          divider.classList.remove('scale-y-0', 'mx-0', 'opacity-0');
+          divider.classList.add('scale-y-100', 'mx-2', 'sm:mx-4', 'opacity-100');
+
+          menuIconWrapper.classList.remove('collapsed');
+          menuIconWrapper.classList.add('expanded');
+          closeIconWrapper.classList.remove('collapsed');
+          closeIconWrapper.classList.add('expanded');
+          toggleBtn.setAttribute('aria-label', 'Close menu');
+
+          navOverlay.classList.remove('hidden');
+          setTimeout(() => {
+            navOverlay.classList.remove('opacity-0');
+            navOverlay.classList.add('opacity-100');
+          }, 10);
+        } else {
+          navWrapper.classList.remove('max-w-[800px]', 'opacity-100', 'px-3', 'sm:px-6');
+          navWrapper.classList.add('max-w-0', 'opacity-0', 'px-0');
+
+          logoExpanded.classList.remove('opacity-100', 'scale-100');
+          logoExpanded.classList.add('opacity-0', 'scale-90', 'pointer-events-none');
+          logoContainerWrap.style.width = '';
+          logoContainerWrap.style.backgroundColor = '';
+          logoContainerWrap.style.border = '';
+          logoContainerWrap.style.borderRadius = '';
+          logoContainerWrap.style.padding = '';
+
+          logoCollapsed.classList.remove('opacity-0', 'scale-90', 'pointer-events-none');
+          logoCollapsed.classList.add('opacity-100', 'scale-100');
+
+          divider.classList.remove('scale-y-100', 'mx-2', 'sm:mx-4', 'opacity-100');
+          divider.classList.add('scale-y-0', 'mx-0', 'opacity-0');
+
+          menuIconWrapper.classList.remove('expanded');
+          menuIconWrapper.classList.add('collapsed');
+          closeIconWrapper.classList.remove('collapsed');
+          closeIconWrapper.classList.add('collapsed');
+          toggleBtn.setAttribute('aria-label', 'Open menu');
+
+          navOverlay.classList.remove('opacity-100');
+          navOverlay.classList.add('opacity-0');
+          setTimeout(() => {
+            navOverlay.classList.add('hidden');
+          }, 500); 
+        }
+      }
+
+      toggleBtn.addEventListener('click', toggleNav);
+      navOverlay.addEventListener('click', () => {
+        if (isNavExpanded) toggleNav();
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && isNavExpanded) {
+          toggleNav();
+        }
+      });
+
+      renderNavLinks();
+    })();
+
+    // ---------- TEAM & VISION SCROLL SECTION LOGIC (SMOOTH HORIZONTAL SCROLL SLIDE) ----------
+    document.addEventListener("DOMContentLoaded", () => {
+      const slides = document.querySelectorAll('.slide-card');
+      const totalSlides = slides.length;
+      const container = document.getElementById('scroll-container');
+      if (!container) return;
+
+      function updateTeamSlides() {
+        const rect = container.getBoundingClientRect();
+        const scrollableDistance = rect.height - window.innerHeight;
+
+        let progress = -rect.top / scrollableDistance;
+        progress = Math.max(0, Math.min(1, progress));
+
+        const floatIndex = progress * (totalSlides - 1);
+
+        slides.forEach((slide, i) => {
+          const distance = i - floatIndex;
+          const translateX = distance * 100; // base slide horizontal translation
+          
+          let opacity = 1 - Math.abs(distance);
+          opacity = Math.max(0, Math.min(1, opacity));
+          opacity = Math.pow(opacity, 1.4); // smoother fade curve
+
+          slide.style.transform = `translateX(${translateX}%)`;
+          slide.style.opacity = opacity;
+          slide.style.pointerEvents = Math.abs(distance) < 0.5 ? 'auto' : 'none';
+          slide.style.zIndex = Math.round(10 - Math.abs(distance) * 10);
+
+          // === INTRA-SLIDE VERTICAL RISE-UP / REVEAL ANIMATIONS ===
+          const absDist = Math.abs(distance);
+          const easeDist = Math.pow(absDist, 1.2); 
+
+          // 1. Staggered image vertical rise reveal
+          const images = slide.querySelectorAll('.member-img-wrapper');
+          images.forEach((img, idx) => {
+            const stagger = 1 + (idx * 0.2); 
+            const yOffset = easeDist * 130 * stagger; 
+            const scale = 1 - (easeDist * 0.05); 
+            img.style.transform = `translateY(${yOffset}px) scale(${scale})`;
+          });
+
+          // 2. Team member names & roles vertical rise reveal
+          const memberTexts = slide.querySelectorAll('.flex-col.items-center > h3, .flex-col.items-center > p');
+          memberTexts.forEach((txt, idx) => {
+            const yOffset = easeDist * 80;
+            txt.style.transform = `translateY(${yOffset}px)`;
+            txt.style.opacity = Math.max(0, 1 - (absDist * 1.8)); 
+          });
+
+          // 3. Right-side text content vertical stagger rise reveal
+          const textBlocks = slide.querySelectorAll('.text-left > *');
+          textBlocks.forEach((el, idx) => {
+            const stagger = 1 + (idx * 0.15);
+            const yOffset = easeDist * 100 * stagger; 
+            el.style.transform = `translateY(${yOffset}px)`;
+            el.style.opacity = Math.max(0, 1 - (absDist * 1.5));
+          });
+        });
+      }
+
+      window.addEventListener('scroll', updateTeamSlides, { passive: true });
+      updateTeamSlides();
+
+      // ---------- BACK TO TOP FUNCTIONALITY ----------
+      const backToTopBtn = document.getElementById('back-to-top-btn');
+      if (backToTopBtn) {
+        backToTopBtn.addEventListener('click', () => {
+          window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+          });
+        });
+      }
+
+      // ---------- GSAP GLOBAL SCROLL REVEAL ANIMATIONS ----------
+      gsap.registerPlugin(ScrollTrigger);
+
+      // Hero video entrance slide from right to left with pop effect
+      gsap.fromTo(".hero-video-wrapper",
+        { x: 80, opacity: 0, scale: 0.92 },
+        { x: 0, opacity: 1, scale: 1, duration: 1.2, ease: "power3.out" }
+      );
+
+      // General scroll reveal elements (excluding footer)
+      gsap.utils.toArray('.scroll-reveal').forEach(el => {
+        gsap.fromTo(el, 
+          { opacity: 0, y: 50, scale: 0.96 },
+          {
+            opacity: 1, 
+            y: 0, 
+            scale: 1,
+            duration: 1.1,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: el,
+              start: "top 88%",
+              toggleActions: "play none none reverse"
+            }
+          }
+        );
+      });
+
+      // Custom Clipping Reveal Animation specifically for the Founder Role Title
+      gsap.fromTo(".founder-role-reveal",
+        { y: "110%", opacity: 0 },
+        {
+          y: "0%",
+          opacity: 1,
+          duration: 1.2,
+          ease: "power4.out",
+          scrollTrigger: {
+            trigger: "#scroll-container",
+            start: "top 80%",
+            toggleActions: "play none none reverse"
+          }
+        }
+      );
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>Why B2B and Infra Brands Are Finally Showing Up on Social Media, and Why Most Are Still Doing It Wrong</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Fontshare Satoshi & Google Fonts (Inter) -->
+  <link href="https://api.fontshare.com/v2/css?f[]=satoshi@500,700,900&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            head: ['Satoshi', 'sans-serif'],
+            subhead: ['"Aeonik Pro"', 'sans-serif'],
+          },
+          colors: {
+            editorial: {
+              bg: '#FFFFFF',
+              text: '#111111',
+              muted: '#666666',
+              border: '#E5E5E5',
+              accent: '#111111'
+            },
+            brand: {
+              navy: '#0F1F5C',
+              blue: '#1A56DB',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- ========================================================= EXACT SDS NAVIGATION STYLES ========================================================= -->
+  <style>
+    .smooth-transition { transition: all 600ms cubic-bezier(0.25, 1, 0.5, 1); }
+    .active-dot { transition: all 300ms cubic-bezier(0.34, 1.56, 0.64, 1); }
+    .active-dot.active { opacity: 1; transform: scale(1) translateX(-50%); box-shadow: 0 0 10px rgba(94, 167, 219, 0.8); }
+    .active-dot.inactive { opacity: 0; transform: scale(0) translateX(-50%); }
+    #menu-icon-wrapper.expanded { transform: rotate(90deg) scale(0); opacity: 0; }
+    #menu-icon-wrapper.collapsed { transform: rotate(0) scale(1); opacity: 1; }
+    #close-icon-wrapper.expanded { transform: rotate(0) scale(1); opacity: 1; }
+    #close-icon-wrapper.collapsed { transform: rotate(-90deg) scale(0); opacity: 0; }
+    .scrollbar-hide::-webkit-scrollbar { display: none; }
+    .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+    #logo-container-wrap { transition: width 500ms cubic-bezier(0.22, 1, 0.36, 1), background-color 400ms ease, border 400ms ease, border-radius 400ms ease, padding 400ms ease; }
+
+    /* Aeonik Pro Semi Bold with Gradient for Non-Footer Elements */
+    .font-subhead, .font-serif, .font-serif-italic {
+      font-family: 'Aeonik Pro', sans-serif;
+      font-weight: 600;
+      font-style: normal;
+      background: linear-gradient(135deg, #0c1334 0%, #27397f 50%, #5ea7db 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: inline-block;
+    }
+  </style>
+
+  <style>
+    body {
+      font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+      background-color: #ffffff;
+    }
+    .linear-line {
+      border-top: 1px solid #E5E5E5;
+    }
+    .fade-up {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .fade-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .scale-in {
+      opacity: 0;
+      transform: scale(0.95);
+      transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+    }
+    .scale-in.visible {
+      opacity: 1;
+      transform: scale(1);
+    }
+    .slide-left {
+      opacity: 0;
+      transform: translateX(-20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .slide-left.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    .stagger-children > * {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .stagger-children.visible > *:nth-child(1) { transition-delay: 0.05s; }
+    .stagger-children.visible > *:nth-child(2) { transition-delay: 0.10s; }
+    .stagger-children.visible > *:nth-child(3) { transition-delay: 0.15s; }
+    .stagger-children.visible > *:nth-child(4) { transition-delay: 0.20s; }
+    .stagger-children.visible > *:nth-child(5) { transition-delay: 0.25s; }
+    .stagger-children.visible > *:nth-child(6) { transition-delay: 0.30s; }
+    .stagger-children.visible > * {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .accent-line {
+      width: 40px;
+      height: 3px;
+      background: linear-gradient(90deg, #0F1F5C, #1A56DB);
+      border-radius: 2px;
+      transition: width 0.5s ease;
+    }
+    .group:hover .accent-line {
+      width: 60px;
+    }
+    .number-glow {
+      transition: color 0.3s ease, transform 0.3s ease;
+    }
+    .group:hover .number-glow {
+      color: #0F1F5C;
+      transform: scale(1.05);
+    }
+    .img-hover {
+      transition: filter 0.7s ease, transform 0.7s ease;
+    }
+    .img-hover:hover {
+      filter: grayscale(0) contrast(1);
+      transform: scale(1.01);
+    }
+    .quote-mark {
+      display: inline-block;
+      animation: float 3s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+
+    /* Footer Gradient and Typography */
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .footer-gradient {
+      background: linear-gradient(135deg, #0c1334 0%, #27397f 100%);
+      background-size: 200% 200%;
+      animation: gradientShift 8s ease infinite;
+    }
+    .footer-aeonik {
+        font-family: 'Aeonik', sans-serif;
+        font-style: normal;
+        font-weight: 100;
+        font-size: clamp(1.15rem, 3.8vw, 3.2rem);
+    }
+    .footer-satoshi {
+        font-family: 'Satoshi', sans-serif;
+        font-style: normal;
+        font-weight: 600;
+        font-size: clamp(1.15rem, 3.8vw, 3.2rem);
+    }
+    .footer-line {
+        display: flex;
+        flex-wrap: nowrap;
+        align-items: baseline;
+        justify-content: center;
+        white-space: nowrap;
+        width: 100%;
+        margin: 0;
+    }
+  </style>
+</head>
+<body class="bg-editorial-bg text-editorial-text font-sans antialiased selection:bg-brand-navy selection:text-white">
+
+  <!-- ========================================================= EXACT DYNAMIC COLLAPSIBLE NAVIGATION ========================================================= -->
+  <div id="nav-container" class="smooth-transition fixed top-3 left-3 sm:top-6 sm:left-6 z-[1000] flex items-center bg-black/60 backdrop-blur-xl border border-white/10 shadow-2xl rounded-full p-2 max-w-[95vw]">
+      <a href="index.html" id="logo-container-wrap" class="z-10 shrink-0 relative flex items-center justify-center h-10 w-10 sm:h-12 sm:w-12 overflow-hidden rounded-full border border-white/10 bg-white/5 cursor-pointer p-1.5 no-underline">
+          <img id="logo-collapsed" src="https://i.postimg.cc/K892XdFR/sds-white-logo-01-(1).png" alt="Collapsed Logo" class="absolute inset-0 w-full h-full object-cover smooth-transition opacity-100 scale-100 p-1" />
+          <img id="logo-expanded" src="https://i.postimg.cc/JnjLHGwc/Untitled-design-(63).png" alt="Expanded Logo" class="absolute inset-0 w-full h-full object-contain smooth-transition opacity-0 scale-95 pointer-events-none p-0.5" />
+      </a>
+      <div id="nav-wrapper" class="smooth-transition flex items-center overflow-x-auto scrollbar-hide max-w-0 opacity-0 px-0">
+          <nav class="flex items-center w-max justify-between gap-3 sm:gap-6 pr-2" id="nav-links-wrapper"></nav>
+      </div>
+      <div class="z-10 flex items-center shrink-0">
+          <div id="divider" class="smooth-transition h-6 w-px bg-white/20 mx-0 scale-y-0 opacity-0"></div>
+          <button id="toggle-btn" class="text-white hover:text-gray-300 transition-colors focus:outline-none p-2.5 rounded-full hover:bg-white/10 active:scale-95 duration-200 shrink-0 ml-1" aria-label="Open menu">
+              <div class="relative w-5 h-5 flex items-center justify-center">
+                  <span id="menu-icon-wrapper" class="absolute collapsed smooth-transition"><i data-lucide="menu" class="w-5 h-5 stroke-[1.5]"></i></span>
+                  <span id="close-icon-wrapper" class="absolute collapsed smooth-transition"><i data-lucide="x" class="w-5 h-5 stroke-[1.5]"></i></span>
+              </div>
+          </button>
+      </div>
+  </div>
+  <div id="nav-overlay" class="fixed inset-0 z-[999] hidden bg-black/40 backdrop-blur-sm transition-opacity duration-500 opacity-0"></div>
+
+  <main class="max-w-6xl mx-auto px-6 sm:px-10 py-16 sm:py-24 lg:py-32 space-y-24 sm:space-y-32">
+
+    <!-- Header / Summary Section -->
+    <section class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start fade-up" id="section-header">
+      <div class="lg:col-span-3 pt-2">
+        <span class="text-xs font-mono font-bold tracking-widest uppercase text-brand-navy/60 border-b border-brand-navy/20 pb-1">INSIGHT</span>
+      </div>
+      <div class="lg:col-span-9 space-y-8">
+        <h1 class="font-head font-black text-4xl sm:text-5xl lg:text-6xl tracking-tight text-editorial-text leading-[1.08]">
+          Why B2B and Infra Brands Are Finally Showing Up on Social Media, and Why Most Are Still Doing It Wrong
+        </h1>
+        <div class="space-y-6 text-lg sm:text-xl text-editorial-muted leading-[1.8] font-sans pt-2">
+          <p class="text-editorial-text font-normal">
+            For years, social media was something B2B and infrastructure companies quietly skipped. It felt like a consumer thing, relevant to fashion labels and food brands, not to EPC contractors, renewable energy developers, or industrial manufacturers. That's changed.
+          </p>
+          <p class="text-neutral-500">
+            Most serious B2B and infra companies now have a LinkedIn page, an Instagram handle, sometimes both. The problem is that showing up isn't the same as showing up well, and most are making the same handful of mistakes.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Feature Visual -->
+    <section class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 scale-in" id="section-visual">
+      <div class="lg:col-span-3"></div>
+      <div class="lg:col-span-9">
+        <div class="overflow-hidden pb-3">
+          <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=1600&auto=format&fit=crop" 
+               alt="B2B and Infrastructure Digital Presence" 
+               class="w-full h-[380px] sm:h-[460px] object-cover grayscale contrast-125 opacity-90 transition-all duration-700 img-hover rounded-[28px]"
+               onerror="this.src='https://placehold.co/1600x900/0F1F5C/FFFFFF?text=Sandy+Design+Studio'">
+          <div class="mt-3 flex justify-between items-center text-xs font-mono text-neutral-400">
+            <span>B2B Brand Systems & Industrial Authority</span>
+            <span>Archive 2026</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Shift Section Header -->
+    <section class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 pt-16 linear-line slide-left" id="section-shift-header">
+      <div class="lg:col-span-3 pt-2"></div>
+      <div class="lg:col-span-9 space-y-4">
+        <h2 class="font-head font-bold text-3xl sm:text-4xl tracking-tight text-editorial-text">Why This Shift Happened</h2>
+        <div class="accent-line mt-4"></div>
+        <p class="text-editorial-muted text-lg sm:text-xl font-sans pt-2">
+          Buying decisions in infrastructure and industrial sectors used to happen almost entirely through relationships, referrals, and tenders. That hasn't disappeared, but it's no longer the whole picture.
+        </p>
+      </div>
+    </section>
+
+    <section class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start fade-up" id="section-shift-details">
+      <div class="lg:col-span-3 pt-2"></div>
+      <div class="lg:col-span-9 space-y-6 text-editorial-muted text-base sm:text-lg leading-[1.8] font-sans">
+        <p>
+          Procurement heads, developers, and investors now research a company online before a meeting happens, the same way any other buyer does. A business with no digital presence increasingly reads as smaller or less established than it actually is, regardless of its real project history.
+        </p>
+        <p class="text-editorial-text font-medium">
+          So companies started showing up. The problem is most of them showed up using a consumer playbook that was never built for this audience.
+        </p>
+      </div>
+    </section>
+
+    <!-- Mistakes Section Header -->
+    <section class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 pt-16 linear-line slide-left" id="section-mistakes-header">
+      <div class="lg:col-span-3 pt-2"></div>
+      <div class="lg:col-span-9">
+        <h2 class="font-head font-bold text-3xl sm:text-4xl tracking-tight text-editorial-text">Where B2B and Infra Brands Go Wrong</h2>
+        <div class="accent-line mt-4"></div>
+      </div>
+    </section>
+
+    <!-- Mistake One -->
+    <section class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start linear-line pt-16 group stagger-children" id="mistake-01">
+      <div class="lg:col-span-3">
+        <span class="font-head font-black text-6xl text-neutral-300 tracking-tighter number-glow">01</span>
+      </div>
+      <div class="lg:col-span-9 space-y-6">
+        <h3 class="font-head font-bold text-2xl sm:text-3xl text-editorial-text">Treating It Like a Portfolio, Not a Platform</h3>
+        <div class="space-y-6 text-editorial-muted text-base sm:text-lg leading-[1.8] font-sans">
+          <p>
+            The most common approach is posting finished project photos with a caption listing the location and capacity. Technically accurate, strategically empty. It shows what was built, not why it mattered, what problem it solved, or what expertise it took to deliver. A photo without context is forgettable within seconds of scrolling past it.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Mistake Two -->
+    <section class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start linear-line pt-16 group stagger-children" id="mistake-02">
+      <div class="lg:col-span-3">
+        <span class="font-head font-black text-6xl text-neutral-300 tracking-tighter number-glow">02</span>
+      </div>
+      <div class="lg:col-span-9 space-y-6">
+        <h3 class="font-head font-bold text-2xl sm:text-3xl text-editorial-text">Corporate Tone With No Point of View</h3>
+        <div class="space-y-6 text-editorial-muted text-base sm:text-lg leading-[1.8] font-sans">
+          <p>
+            Many B2B and infra pages read like a press release rewritten for social media, formal, safe, and interchangeable with any competitor's page. Nobody remembers a brand that sounds like everyone else in its category. The companies getting real engagement are the ones willing to state an actual opinion, about their industry, their process, or where things are headed, not just announce completed work.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Mistake Three -->
+    <section class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start linear-line pt-16 group stagger-children" id="mistake-03">
+      <div class="lg:col-span-3">
+        <span class="font-head font-black text-6xl text-neutral-300 tracking-tighter number-glow">03</span>
+      </div>
+      <div class="lg:col-span-9 space-y-6">
+        <h3 class="font-head font-bold text-2xl sm:text-3xl text-editorial-text">Posting Without a System</h3>
+        <div class="space-y-6 text-editorial-muted text-base sm:text-lg leading-[1.8] font-sans">
+          <p>
+            A page that posts actively for three weeks, then goes quiet for two months, does more damage than staying quiet altogether. Inconsistency reads as instability, even when the business behind it is stable and growing. Most B2B and infra companies don't lack content, they lack a system for turning ongoing work into a steady, planned stream of it.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Mistake Four -->
+    <section class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start linear-line pt-16 group stagger-children" id="mistake-04">
+      <div class="lg:col-span-3">
+        <span class="font-head font-black text-6xl text-neutral-300 tracking-tighter number-glow">04</span>
+      </div>
+      <div class="lg:col-span-9 space-y-6">
+        <h3 class="font-head font-bold text-2xl sm:text-3xl text-editorial-text">Choosing the Wrong Platform to Prioritize</h3>
+        <div class="space-y-6 text-editorial-muted text-base sm:text-lg leading-[1.8] font-sans">
+          <p>
+            A significant number of B2B and infra companies invest heavily in Instagram content while their actual buyers, developers, procurement teams, investors, are spending their research time on LinkedIn.
+          </p>
+          <p class="text-editorial-text">
+            Instagram can play an important role in visibility, culture, project storytelling, and brand perception. But for most B2B and infrastructure companies, LinkedIn should usually be the primary platform for building industry authority and reaching decision-makers.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Mistake Five -->
+    <section class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start linear-line pt-16 group stagger-children" id="mistake-05">
+      <div class="lg:col-span-3">
+        <span class="font-head font-black text-6xl text-neutral-300 tracking-tighter number-glow">05</span>
+      </div>
+      <div class="lg:col-span-9 space-y-6">
+        <h3 class="font-head font-bold text-2xl sm:text-3xl text-editorial-text">No Human Behind the Page</h3>
+        <div class="space-y-6 text-editorial-muted text-base sm:text-lg leading-[1.8] font-sans">
+          <p>
+            Company pages that never show the people building the work tend to underperform pages associated with a visible founder or leadership voice. In B2B especially, people don't just buy from companies, they buy from people they've formed some impression of. A founder sharing perspective consistently often outperforms a polished but faceless company account.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Mistake Six -->
+    <section class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start linear-line pt-16 group stagger-children" id="mistake-06">
+      <div class="lg:col-span-3">
+        <span class="font-head font-black text-6xl text-neutral-300 tracking-tighter number-glow">06</span>
+      </div>
+      <div class="lg:col-span-9 space-y-6">
+        <h3 class="font-head font-bold text-2xl sm:text-3xl text-editorial-text">Looking Like Every Other Infrastructure Company</h3>
+        <div class="space-y-6 text-editorial-muted text-base sm:text-lg leading-[1.8] font-sans">
+          <p>
+            Many infrastructure companies have strong project capabilities but weak brand differentiation. Their websites, presentations, social media posts, and company profiles all look interchangeable with competitors. The same blue gradients. The same drone shots. The same generic captions.
+          </p>
+          <p class="text-editorial-text">
+            In a sector where technical capabilities can often sound similar, brand perception becomes a differentiator. A clear positioning strategy, distinctive visual system, and consistent communication style can make a company easier to remember long before the next meeting or tender.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Pull Quote Block -->
+    <section class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start linear-line pt-16 fade-up" id="section-quote">
+      <div class="lg:col-span-3">
+        <span class="text-4xl font-subhead italic text-brand-navy/30 quote-mark">“</span>
+      </div>
+      <div class="lg:col-span-9 space-y-6">
+        <blockquote class="font-subhead italic text-2xl sm:text-3xl text-editorial-text leading-snug">
+          "Instagram has a role, mostly in humanizing the brand and showing culture, but it's rarely where a serious buying decision gets influenced."
+        </blockquote>
+        <div class="flex items-center gap-4 pt-2">
+          <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop" 
+               alt="Sandy Design Studio" 
+               class="w-10 h-10 rounded-[28px] object-cover grayscale"
+               onerror="this.src='https://placehold.co/100x100/0F1F5C/FFFFFF?text=SD'">
+          <div>
+            <div class="font-head font-bold text-sm text-editorial-text">Sandy Design Studio</div>
+            <div class="text-xs font-mono text-brand-navy/70 uppercase tracking-wider">Design & Strategy</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- What Doing It Right Looks Like -->
+    <section class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start linear-line pt-20 fade-up" id="section-right-way">
+      <div class="lg:col-span-3 pt-2"></div>
+      <div class="lg:col-span-9 space-y-8">
+        <h2 class="font-head font-bold text-3xl sm:text-4xl text-editorial-text">What Doing It Right Actually Looks Like</h2>
+        <div class="space-y-6 text-editorial-muted text-lg sm:text-xl leading-[1.8] font-sans">
+          <p>
+            The B2B and infra companies getting real value from social media share a few habits:
+          </p>
+          <div class="space-y-4 pt-2 font-sans text-editorial-text text-base sm:text-lg leading-relaxed">
+            <div class="flex items-start gap-4 hover:pl-2 transition-all duration-300">
+              <span class="w-1.5 h-1.5 rounded-full bg-brand-navy mt-3 shrink-0"></span>
+              <p>They post with context, not just documentation, explaining the thinking behind a project, not just showing the result.</p>
+            </div>
+            <div class="flex items-start gap-4 hover:pl-2 transition-all duration-300">
+              <span class="w-1.5 h-1.5 rounded-full bg-brand-navy mt-3 shrink-0"></span>
+              <p>They maintain a consistent point of view instead of sounding interchangeable with competitors.</p>
+            </div>
+            <div class="flex items-start gap-4 hover:pl-2 transition-all duration-300">
+              <span class="w-1.5 h-1.5 rounded-full bg-brand-navy mt-3 shrink-0"></span>
+              <p>They post on a planned schedule instead of in unpredictable bursts.</p>
+            </div>
+            <div class="flex items-start gap-4 hover:pl-2 transition-all duration-300">
+              <span class="w-1.5 h-1.5 rounded-full bg-brand-navy mt-3 shrink-0"></span>
+              <p>They prioritize LinkedIn as the primary channel, since that's where their actual buyers are researching.</p>
+            </div>
+            <div class="flex items-start gap-4 hover:pl-2 transition-all duration-300">
+              <span class="w-1.5 h-1.5 rounded-full bg-brand-navy mt-3 shrink-0"></span>
+              <p>They let real people—founders, engineers, project leads—be part of the story, not just the finished structure.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- The Opportunity This Creates -->
+    <section class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start linear-line pt-20 fade-up" id="section-opportunity">
+      <div class="lg:col-span-3 pt-2"></div>
+      <div class="lg:col-span-9 space-y-8">
+        <h2 class="font-head font-bold text-3xl sm:text-4xl text-editorial-text">The Opportunity This Creates</h2>
+        <div class="space-y-6 text-editorial-muted text-lg sm:text-xl leading-[1.8] font-sans">
+          <p>
+            Because so many B2B and infra companies are still getting this wrong, the bar to stand out is lower than it looks. A company willing to post with real perspective, real consistency, and the right platform priority doesn't need to outspend competitors. It just needs to be one of the few actually doing it properly.
+          </p>
+          <p class="text-editorial-text font-medium pt-2">
+            If your business is active online but it isn't translating into real inquiries, that's usually a strategy gap, not an effort gap.
+          </p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="w-full text-white pt-16 pb-12 px-[var(--gutter)] border-t border-white/10 relative z-30 stagger-container footer-gradient mt-24">
+      <div class="max-w-7xl mx-auto flex flex-col gap-8">
+          <div class="flex flex-col md:flex-row justify-between text-[14px] leading-relaxed font-normal tracking-wide">
+              <div class="flex flex-wrap gap-12 md:gap-16 lg:gap-24">
+                  <div class="flex flex-col gap-2.5 leading-loose">
+                      <a class="hover:text-gray-300 transition-colors" href="built.html">Built</a>
+                      <a class="hover:text-gray-300 transition-colors" href="studio.html">Studio</a>
+                  </div>
+                  <div class="flex flex-col gap-2.5 leading-loose">
+                      <a class="hover:text-gray-300 transition-colors" href="create.html">Create</a>
+                      <a class="hover:text-gray-300 transition-colors" href="think.html">Think</a>
+                      <a class="hover:text-gray-300 transition-colors" href="connect.html">Connect</a>
+                  </div>
+                  <div class="flex flex-col gap-2.5 leading-loose">
+                      <span class="text-white/80 text-sm">Chennai</span>
+                      <span class="text-white/60 text-sm">Tamil Nadu, India</span>
+                  </div>
+              </div>
+
+              <div class="flex flex-col gap-2.5 mt-6 md:mt-0 md:text-right leading-loose">
+                  <a class="hover:text-gray-300 transition-colors" href="tel:+916369325726">+91 63693 25726</a>
+                  <a class="hover:text-gray-300 transition-colors" href="mailto:admin@sandydesignstudio.com">admin@sandydesignstudio.com</a>
+                  <a class="hover:text-gray-300 transition-colors" href="#">Company Profile</a>
+              </div>
+          </div>
+
+          <div class="flex gap-4 mt-2">
+              <a aria-label="LinkedIn" class="w-10 h-10 bg-white rounded-full flex items-center justify-center text-[#0c1334] hover:bg-gray-200 transition-colors micro-hover" href="https://www.linkedin.com/company/sandydesignstudio">
+                <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+              </a>
+              <a aria-label="Instagram" class="w-10 h-10 bg-white rounded-full flex items-center justify-center text-[#0c1334] hover:bg-gray-200 transition-colors micro-hover" href="https://www.instagram.com/sandydesignstudio_">
+                <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+              </a>
+              <a aria-label="Facebook" class="w-10 h-10 bg-white rounded-full flex items-center justify-center text-[#0c1334] hover:bg-gray-200 transition-colors micro-hover" href="#">
+                <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"/></svg>
+              </a>
+              <a aria-label="YouTube" class="w-10 h-10 bg-white rounded-full flex items-center justify-center text-[#0c1334] hover:bg-gray-200 transition-colors micro-hover" href="#">
+                <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg>
+              </a>
+          </div>
+
+          <hr class="border-t border-white/20 w-full mt-4 mb-6" />
+
+          <div class="flex-grow flex flex-col items-center justify-center text-center w-full pb-8">
+              <h1 class="footer-line">
+                  <span class="footer-aeonik">Where business thinking&nbsp;</span>
+                  <span class="footer-satoshi">becomes brand expression.</span>
+              </h1>
+          </div>
+      </div>
+  </footer>
+
+  <!-- ========================================================= NAVIGATION JAVASCRIPT ========================================================= -->
+  <script>
+    lucide.createIcons();
+
+    (function() {
+        let isNavExpanded = false;
+        const navItemsList = [
+            { label: 'Built', href: 'built.html' }, { label: 'Create', href: 'create.html' },
+            { label: 'Studio', href: 'studio.html' }, { label: 'Think', href: 'think.html' },
+            { label: 'Connect', href: 'connect.html' }
+        ];
+
+        const navWrapper = document.getElementById('nav-wrapper');
+        const navLinksWrapper = document.getElementById('nav-links-wrapper');
+        const logoContainerWrap = document.getElementById('logo-container-wrap');
+        const logoCollapsed = document.getElementById('logo-collapsed');
+        const logoExpanded = document.getElementById('logo-expanded');
+        const divider = document.getElementById('divider');
+        const toggleBtn = document.getElementById('toggle-btn');
+        const menuIconWrapper = document.getElementById('menu-icon-wrapper');
+        const closeIconWrapper = document.getElementById('close-icon-wrapper');
+        const navOverlay = document.getElementById('nav-overlay');
+
+        function renderNavLinks() {
+            if (!navLinksWrapper) return;
+            navLinksWrapper.innerHTML = '';
+            let currentPath = window.location.pathname.split('/').pop().toLowerCase() || 'index.html';
+
+            navItemsList.forEach(item => {
+                const isActive = currentPath === item.href.toLowerCase();
+                const textColorClass = isActive ? 'text-white' : 'text-gray-400 group-hover:text-white';
+                const dotStateClass = isActive ? 'active' : 'inactive';
+                const linkHTML = `
+                    <a href="${item.href}" class="relative group text-[clamp(11px,1.5vw,16px)] font-medium transition-colors duration-300 focus:outline-none whitespace-nowrap py-2 px-1 no-underline">
+                        <span class="transition-colors duration-300 ${textColorClass}">${item.label}</span>
+                        <span class="active-dot ${dotStateClass} absolute -bottom-1 left-1/2 w-1.5 h-1.5 rounded-full bg-white shadow-lg"></span>
+                    </a>
+                `;
+                navLinksWrapper.insertAdjacentHTML('beforeend', linkHTML);
+            });
+        }
+
+        function toggleNav() {
+            isNavExpanded = !isNavExpanded;
+            if (isNavExpanded) {
+                navWrapper.classList.replace('max-w-0', 'max-w-[800px]');
+                navWrapper.classList.replace('opacity-0', 'opacity-100');
+                navWrapper.classList.replace('px-0', 'px-3');
+                navWrapper.classList.add('sm:px-6');
+
+                logoContainerWrap.style.width = window.innerWidth < 640 ? '90px' : '130px';
+                logoContainerWrap.classList.remove('rounded-full', 'border', 'bg-white/5', 'border-white/10');
+                logoContainerWrap.classList.add('rounded-none', 'bg-transparent', 'border-transparent');
+                
+                logoCollapsed.classList.replace('opacity-100', 'opacity-0');
+                logoCollapsed.classList.replace('scale-100', 'scale-90');
+                logoCollapsed.classList.add('pointer-events-none');
+
+                logoExpanded.classList.replace('opacity-0', 'opacity-100');
+                logoExpanded.classList.replace('scale-90', 'scale-100');
+                logoExpanded.classList.remove('pointer-events-none');
+
+                divider.classList.replace('scale-y-0', 'scale-y-100');
+                divider.classList.replace('opacity-0', 'opacity-100');
+                divider.classList.replace('mx-0', 'mx-2');
+                divider.classList.add('sm:mx-4');
+
+                menuIconWrapper.classList.replace('collapsed', 'expanded');
+                closeIconWrapper.classList.replace('collapsed', 'expanded');
+                toggleBtn.setAttribute('aria-label', 'Close menu');
+
+                navOverlay.classList.remove('hidden');
+                setTimeout(() => navOverlay.classList.replace('opacity-0', 'opacity-100'), 10);
+            } else {
+                navWrapper.classList.replace('max-w-[800px]', 'max-w-0');
+                navWrapper.classList.replace('opacity-100', 'opacity-0');
+                navWrapper.classList.replace('px-3', 'px-0');
+                navWrapper.classList.remove('sm:px-6');
+
+                logoExpanded.classList.replace('opacity-100', 'opacity-0');
+                logoExpanded.classList.replace('scale-100', 'scale-90');
+                logoExpanded.classList.add('pointer-events-none');
+
+                logoContainerWrap.style.width = '';
+                logoContainerWrap.classList.add('rounded-full', 'border', 'bg-white/5', 'border-white/10');
+                logoContainerWrap.classList.remove('rounded-none', 'bg-transparent', 'border-transparent');
+                
+                logoCollapsed.classList.replace('opacity-0', 'opacity-100');
+                logoCollapsed.classList.replace('scale-90', 'scale-100');
+                logoCollapsed.classList.remove('pointer-events-none');
+
+                divider.classList.replace('scale-y-100', 'scale-y-0');
+                divider.classList.replace('opacity-100', 'opacity-0');
+                divider.classList.replace('mx-2', 'mx-0');
+                divider.classList.remove('sm:mx-4');
+
+                menuIconWrapper.classList.replace('expanded', 'collapsed');
+                closeIconWrapper.classList.replace('expanded', 'collapsed');
+                toggleBtn.setAttribute('aria-label', 'Open menu');
+
+                navOverlay.classList.replace('opacity-100', 'opacity-0');
+                setTimeout(() => navOverlay.classList.add('hidden'), 500);
+            }
+        }
+
+        if (toggleBtn) toggleBtn.addEventListener('click', toggleNav);
+        if (navOverlay) navOverlay.addEventListener('click', () => { if (isNavExpanded) toggleNav(); });
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && isNavExpanded) toggleNav(); });
+
+        renderNavLinks();
+    })();
+  </script>
+
+  <!-- ========================================================= PAGE FUNCTIONALITY JAVASCRIPT ========================================================= -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const fadeElements = document.querySelectorAll('.fade-up, .scale-in, .slide-left, .stagger-children');
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          }
+        });
+      }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+      fadeElements.forEach(el => observer.observe(el));
+    });
+  </script>
+</body>
+</html>
