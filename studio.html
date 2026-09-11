@@ -409,29 +409,69 @@
     }
 
     .member-img-wrapper {
-      width: 200px;
-      height: 280px;
+      width: 210px;
+      height: 290px;
       flex-shrink: 0;
       border-radius: 0.85rem;
-      overflow: hidden;
+      overflow: visible;
       display: flex;
       align-items: center;
       justify-content: center;
       background-color: transparent;
+      position: relative;
     }
     
     .member-img-wrapper img {
       object-fit: contain;
-      object-position: center bottom;
+      object-position: center center;
       width: 100%;
       height: 100%;
+      border-radius: 0.85rem;
     }
-
+    
     @media (min-width: 640px) {
-      .member-img-wrapper { width: 260px; height: 350px; }
+      .member-img-wrapper { width: 240px; height: 330px; }
     }
     @media (min-width: 1024px) {
-      .member-img-wrapper { width: 340px; height: 480px; }
+      .member-img-wrapper { width: 280px; height: 380px; }
+    }
+
+    /* ---------- MESSAGE BOX TOOLTIP (TOP HOVER) ---------- */
+    .bio-tooltip {
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-100%);
+      background: #111111;
+      color: #ffffff;
+      font-size: 11px;
+      font-family: 'Inter', sans-serif;
+      padding: 8px 14px;
+      border-radius: 12px;
+      white-space: nowrap;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 100;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+      pointer-events: none;
+    }
+    .bio-tooltip::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 50%;
+      transform: translateX(-50%) rotate(45deg);
+      width: 10px;
+      height: 10px;
+      background: #111111;
+      border-radius: 2px;
+    }
+    .member-img-wrapper:hover .bio-tooltip,
+    .member-img-wrapper:active .bio-tooltip {
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(-50%) translateY(calc(-100% - 8px));
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -547,8 +587,9 @@
         <!-- SLIDE 0: Founder (Santhosh S) -->
         <div id="slide-0" class="slide-card">
           <div class="team-card-inner">
-            <div class="member-img-wrapper !w-[220px] sm:!w-[300px] lg:!w-[420px] !h-[310px] sm:!h-[420px] lg:!h-[580px]">
+            <div class="member-img-wrapper !w-[220px] sm:!w-[300px] lg:!w-[420px] !h-[310px] sm:!h-[420px] lg:!h-[580px] group cursor-pointer">
               <img alt="Founder sitting on a chair" class="w-full h-full object-cover object-center drop-shadow-xl" src="https://i.postimg.cc/QC2zsBdh/Founder-3x-3x.png"/>
+              <div class="bio-tooltip">Never settles for average</div>
             </div>
             <div class="flex flex-col text-left max-w-lg">
               <h1 class="text-2xl sm:text-4xl lg:text-5xl font-bold tracking-tight mb-2 leading-none text-gray-900">
@@ -564,20 +605,22 @@
           </div>
         </div>
 
-        <!-- SLIDE 1: Brand & Social Media Team -->
+        <!-- SLIDE 1: Brand & Social Media Team (Rohith Susan & Hirthik) -->
         <div id="slide-1" class="slide-card">
           <div class="team-card-inner">
             <div class="flex gap-4">
               <div class="flex flex-col items-center">
-                <div class="member-img-wrapper !w-[130px] sm:!w-[190px] lg:!w-[230px] !h-[170px] sm:!h-[260px] lg:!h-[320px]">
-                  <img src="https://imgh.in/host/m6zaa5" alt="Gowshik Kumar" class="w-full h-full object-cover object-center"/>
+                <div class="member-img-wrapper !w-[130px] sm:!w-[190px] lg:!w-[230px] !h-[170px] sm:!h-[260px] lg:!h-[320px] group cursor-pointer">
+                  <img src="https://imgh.in/host/m6zaa5" alt="Rohith Susan" class="w-full h-full object-cover object-center"/>
+                  <div class="bio-tooltip">I speak fluent deadlines, period.</div>
                 </div>
-                <h3 class="text-xs sm:text-sm font-bold text-gray-900 mt-2">Gowshik Kumar</h3>
-                <p class="gradient-text text-[8px] sm:text-xs uppercase tracking-wider font-semibold">Brand Manager</p>
+                <h3 class="text-xs sm:text-sm font-bold text-gray-900 mt-2">Rohith Susan</h3>
+                <p class="gradient-text text-[8px] sm:text-xs uppercase tracking-wider font-semibold">Project Manager</p>
               </div>
               <div class="flex flex-col items-center">
-                <div class="member-img-wrapper !w-[130px] sm:!w-[190px] lg:!w-[230px] !h-[170px] sm:!h-[260px] lg:!h-[320px]">
+                <div class="member-img-wrapper !w-[130px] sm:!w-[190px] lg:!w-[230px] !h-[170px] sm:!h-[260px] lg:!h-[320px] group cursor-pointer">
                   <img src="https://imgh.in/host/fc8q57" alt="Hirthik" class="w-full h-full object-cover object-center"/>
+                  <div class="bio-tooltip">Scrolling is technically part of the job</div>
                 </div>
                 <h3 class="text-xs sm:text-sm font-bold text-gray-900 mt-2">Hirthik</h3>
                 <p class="gradient-text text-[8px] sm:text-xs uppercase tracking-wider font-semibold">Social Media Manager</p>
@@ -599,33 +642,100 @@
           </div>
         </div>
 
-        <!-- SLIDE 2: Creative & Video Editing Team (3 members in a row with balanced sizes) -->
+        <!-- SLIDE 2: Creative & Video Editing Team (5 members layout with requested position tweaks and hover message box bios) -->
         <div id="slide-2" class="slide-card">
-          <div class="team-card-inner">
-            <div class="flex gap-3 sm:gap-4 justify-center items-center">
-              <div class="flex flex-col items-center">
-                <div class="member-img-wrapper !w-[120px] sm:!w-[160px] lg:!w-[200px] !h-[160px] sm:!h-[220px] lg:!h-[280px]">
-                  <img src="https://imgh.in/host/h3j4vy" alt="Kasi" class="w-full h-full object-cover object-center"/>
+          <div class="team-card-inner !flex-col lg:!flex-row !justify-center lg:!justify-between !max-w-7xl !w-full !px-4 lg:!px-8 gap-8 lg:gap-4">
+            <!-- Staggered Grid of 5 Members (Desktop Layout) -->
+            <div class="relative w-full max-w-[700px] h-[520px] sm:h-[580px] lg:h-[640px] hidden sm:block shrink-0 mx-auto">
+              <!-- 1. Kasi (Top Left) -->
+              <div class="absolute top-[-40px] left-[-75px] sm:left-[-95px] flex flex-col items-center w-[170px] sm:w-[200px] lg:w-[230px]">
+                <div class="member-img-wrapper !w-[170px] sm:!w-[200px] lg:!w-[230px] !h-[210px] sm:!h-[250px] lg:!h-[290px] group cursor-pointer">
+                  <img src="https://imgh.in/host/h3j4vy" alt="Kasi" />
+                  <div class="bio-tooltip">Professionally allergic to unnecessary cuts & changes.</div>
                 </div>
                 <h3 class="text-xs sm:text-sm font-bold text-gray-900 mt-2 text-center">Kasi</h3>
-                <p class="gradient-text text-[8px] sm:text-xs uppercase tracking-wider font-semibold text-center">Head of Video Editing</p>
+                <p class="gradient-text text-[7px] sm:text-[10px] uppercase tracking-wider font-semibold text-center">HEAD OF VIDEO EDITING</p>
               </div>
-              <div class="flex flex-col items-center">
-                <div class="member-img-wrapper !w-[105px] sm:!w-[140px] lg:!w-[175px] !h-[140px] sm:!h-[195px] lg:!h-[245px]">
-                  <img src="https://imgh.in/host/hjk4ok" alt="Gopi" class="w-full h-full object-cover object-center"/>
+
+              <!-- 2. Taufia Zayan (Center Guy) -->
+              <div class="absolute top-[130px] sm:top-[160px] lg:top-[190px] left-[140px] sm:left-[175px] lg:left-[210px] flex flex-col items-center w-[215px] sm:w-[245px] lg:w-[285px] z-10">
+                <div class="member-img-wrapper !w-[215px] sm:!w-[245px] lg:!w-[285px] !h-[260px] sm:!h-[300px] lg:!h-[345px] group cursor-pointer">
+                  <img src="https://i.postimg.cc/GpFHhzPm/image.png" alt="Taufia Zayan" />
+                  <div class="bio-tooltip">Somehow still calm after the fifth revision.</div>
                 </div>
-                <h3 class="text-xs sm:text-sm font-bold text-gray-900 mt-2 text-center">Gopi</h3>
-                <p class="gradient-text text-[8px] sm:text-xs uppercase tracking-wider font-semibold text-center">Video Editor 1</p>
+                <h3 class="text-xs sm:text-sm font-bold text-gray-900 mt-2 text-center">Taufia Zayan</h3>
+                <p class="gradient-text text-[7px] sm:text-[10px] uppercase tracking-wider font-semibold text-center">VIDEO EDITOR 2</p>
               </div>
-              <div class="flex flex-col items-center">
-                <div class="member-img-wrapper !w-[120px] sm:!w-[160px] lg:!w-[200px] !h-[160px] sm:!h-[220px] lg:!h-[280px]">
-                  <img src="https://imgh.in/host/kr4pbs" alt="Madhan Kumar" class="w-full h-full object-cover object-center"/>
+
+              <!-- 3. Madhan Kumar 1 (Top Right) -->
+              <div class="absolute top-[-45px] left-[390px] sm:left-[470px] lg:left-[550px] flex flex-col items-center w-[170px] sm:w-[200px] lg:w-[230px]">
+                <div class="member-img-wrapper !w-[170px] sm:!w-[200px] lg:!w-[230px] !h-[210px] sm:!h-[250px] lg:!h-[290px] group cursor-pointer">
+                  <img src="https://imgh.in/host/kr4pbs" alt="Madhan Kumar" />
+                  <div class="bio-tooltip">Stay silent until the design is done.</div>
                 </div>
                 <h3 class="text-xs sm:text-sm font-bold text-gray-900 mt-2 text-center">Madhan Kumar</h3>
-                <p class="gradient-text text-[8px] sm:text-xs uppercase tracking-wider font-semibold text-center">Graphics Designer</p>
+                <p class="gradient-text text-[7px] sm:text-[10px] uppercase tracking-wider font-semibold text-center">GRAPHICS DESIGNER</p>
+              </div>
+
+              <!-- 4. Gopi (Bottom Left) -->
+              <div class="absolute top-[240px] sm:top-[280px] lg:top-[320px] left-[-75px] sm:left-[-95px] flex flex-col items-center w-[170px] sm:w-[200px] lg:w-[230px]">
+                <div class="member-img-wrapper !w-[170px] sm:!w-[200px] lg:!w-[230px] !h-[210px] sm:!h-[250px] lg:!h-[290px] group cursor-pointer">
+                  <img src="https://imgh.in/host/hjk4ok" alt="Gopi" />
+                  <div class="bio-tooltip">Somewhere between silence and editing life choices</div>
+                </div>
+                <h3 class="text-xs sm:text-sm font-bold text-gray-900 mt-2 text-center">Gopi</h3>
+                <p class="gradient-text text-[7px] sm:text-[10px] uppercase tracking-wider font-semibold text-center">VIDEO EDITOR 1</p>
+              </div>
+
+              <!-- 5. Gowshik Kumar (Bottom Right) -->
+              <div class="absolute top-[240px] sm:top-[280px] lg:top-[320px] left-[390px] sm:left-[470px] lg:left-[550px] flex flex-col items-center w-[170px] sm:w-[200px] lg:w-[230px]">
+                <div class="member-img-wrapper !w-[170px] sm:!w-[200px] lg:!w-[230px] !h-[210px] sm:!h-[250px] lg:!h-[290px] group cursor-pointer">
+                  <img src="https://imgh.in/host/m6zaa5" alt="Gowshik Kumar" />
+                  <div class="bio-tooltip">Guarding the brand holy book</div>
+                </div>
+                <h3 class="text-xs sm:text-sm font-bold text-gray-900 mt-2 text-center">Gowshik Kumar</h3>
+                <p class="gradient-text text-[7px] sm:text-[10px] uppercase tracking-wider font-semibold text-center">BRAND MANAGER</p>
               </div>
             </div>
-            <div class="flex flex-col text-left max-w-lg">
+
+            <!-- Mobile fallback grid (Optimized) -->
+            <div class="grid grid-cols-2 gap-3 sm:hidden w-full max-w-sm mx-auto">
+              <div class="flex flex-col items-center">
+                <div class="member-img-wrapper !w-[130px] !h-[175px] group cursor-pointer">
+                  <img src="https://imgh.in/host/h3j4vy" alt="Kasi" />
+                  <div class="bio-tooltip">Professionally allergic to unnecessary cuts & changes.</div>
+                </div>
+                <h3 class="text-xs font-bold text-gray-900 mt-1 text-center">Kasi</h3>
+                <p class="gradient-text text-[8px] uppercase font-semibold text-center">HEAD OF VIDEO EDITING</p>
+              </div>
+              <div class="flex flex-col items-center">
+                <div class="member-img-wrapper !w-[145px] !h-[195px] group cursor-pointer">
+                  <img src="https://i.postimg.cc/GpFHhzPm/image.png" alt="Taufia Zayan" />
+                  <div class="bio-tooltip">Somehow still calm after the fifth revision.</div>
+                </div>
+                <h3 class="text-xs font-bold text-gray-900 mt-1 text-center">Taufia Zayan</h3>
+                <p class="gradient-text text-[8px] uppercase font-semibold text-center">VIDEO EDITOR 2</p>
+              </div>
+              <div class="flex flex-col items-center">
+                <div class="member-img-wrapper !w-[130px] !h-[175px] group cursor-pointer">
+                  <img src="https://imgh.in/host/hjk4ok" alt="Gopi" />
+                  <div class="bio-tooltip">Somewhere between silence and editing life choices</div>
+                </div>
+                <h3 class="text-xs font-bold text-gray-900 mt-1 text-center">Gopi</h3>
+                <p class="gradient-text text-[8px] uppercase font-semibold text-center">VIDEO EDITOR 1</p>
+              </div>
+              <div class="flex flex-col items-center">
+                <div class="member-img-wrapper !w-[130px] !h-[175px] group cursor-pointer">
+                  <img src="https://imgh.in/host/kr4pbs" alt="Madhan Kumar" />
+                  <div class="bio-tooltip">Stay silent until the design is done.</div>
+                </div>
+                <h3 class="text-xs font-bold text-gray-900 mt-1 text-center">Madhan Kumar</h3>
+                <p class="gradient-text text-[8px] uppercase font-semibold text-center">GRAPHICS DESIGNER</p>
+              </div>
+            </div>
+
+            <!-- Right Side Text Area -->
+            <div class="flex flex-col text-left max-w-sm shrink-0 lg:ml-6">
               <div class="mb-3 flex items-center justify-start">
                 <span class="gradient-text font-semibold text-base sm:text-lg">02</span>
                 <span class="text-gray-400 text-xs sm:text-sm tracking-widest ml-3 uppercase font-medium">/ CREATIVE</span>
@@ -646,20 +756,22 @@
           </div>
         </div>
 
-        <!-- SLIDE 3: Production Team -->
+        <!-- SLIDE 3: Production Team (Karthi Deivam & Suriya) -->
         <div id="slide-3" class="slide-card">
           <div class="team-card-inner">
             <div class="flex gap-4">
               <div class="flex flex-col items-center">
-                <div class="member-img-wrapper !w-[130px] sm:!w-[190px] lg:!w-[230px] !h-[170px] sm:!h-[260px] lg:!h-[320px]">
+                <div class="member-img-wrapper !w-[130px] sm:!w-[190px] lg:!w-[230px] !h-[170px] sm:!h-[260px] lg:!h-[320px] group cursor-pointer">
                   <img src="https://imgh.in/host/es4vng" alt="Karthi Deivam" class="w-full h-full object-cover object-center"/>
+                  <div class="bio-tooltip">For us, “what if” means “let’s actually do it.”</div>
                 </div>
                 <h3 class="text-xs sm:text-sm font-bold text-gray-900 mt-2">Karthi Deivam</h3>
                 <p class="gradient-text text-[8px] sm:text-xs uppercase tracking-wider font-semibold">Creative Director</p>
               </div>
               <div class="flex flex-col items-center">
-                <div class="member-img-wrapper !w-[130px] sm:!w-[190px] lg:!w-[230px] !h-[170px] sm:!h-[260px] lg:!h-[320px]">
+                <div class="member-img-wrapper !w-[130px] sm:!w-[190px] lg:!w-[230px] !h-[170px] sm:!h-[260px] lg:!h-[320px] group cursor-pointer">
                   <img src="https://imgh.in/host/otbbgt" alt="Suriya" class="w-full h-full object-cover object-center"/>
+                  <div class="bio-tooltip">For us, “what if” means “let’s actually do it.”</div>
                 </div>
                 <h3 class="text-xs sm:text-sm font-bold text-gray-900 mt-2">Suriya</h3>
                 <p class="gradient-text text-[8px] sm:text-xs uppercase tracking-wider font-semibold">DOP</p>
